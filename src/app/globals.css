@@ -2,22 +2,86 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 23 23 23;
+    --foreground: 245 245 240;
+
+    --card: 38 38 38;
+    --card-foreground: var(--foreground);
+
+    --popover: 38 38 38;
+    --popover-foreground: var(--foreground);
+
+    --primary: var(--foreground);
+    --primary-foreground: var(--background);
+
+    --secondary: 38 38 38;
+    --secondary-foreground: var(--foreground);
+
+    --muted: 38 38 38;
+    --muted-foreground: 115 115 115;
+
+    --input: var(--secondary);
+
+    --radius: 0.5rem;
+
+    --destructive: 237 66 69;
+    --success: 36 128 70;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .horizontal {
+    @apply flex flex-row;
+  }
+
+  .vertical {
+    @apply flex flex-col;
+  }
+
+  .horizontal.center-v {
+    @apply items-center;
+  }
+
+  .horizontal.center-h {
+    @apply justify-center;
+  }
+
+  .horizontal.center {
+    @apply items-center justify-center;
+  }
+
+  .vertical.center-v {
+    @apply justify-center;
+  }
+
+  .vertical.center-h {
+    @apply items-center;
+  }
+
+  .vertical.center {
+    @apply items-center justify-center;
+  }
+
+  .space-between {
+    @apply justify-between;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-muted-foreground;
+  }
+
+  html {
+    @apply size-full flex-1 scroll-smooth;
+  }
+  body {
+    @apply bg-background text-primary;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
 }
 
 @layer utilities {
