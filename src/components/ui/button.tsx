@@ -15,7 +15,7 @@ const buttonVariants = tv({
     color: {
       default: 'bg-primary text-primary-foreground ring-white hover:bg-primary/90',
       white: 'bg-white text-black',
-      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+      secondary: 'bg-muted-foreground/10 text-secondary-foreground hover:bg-muted-foreground/20',
       destructive: 'bg-destructive text-white hover:bg-destructive/60 active:bg-destructive/40',
       success: 'bg-success text-white hover:bg-success/90'
     },
@@ -25,14 +25,15 @@ const buttonVariants = tv({
       link: 'bg-transparent hover:bg-transparent hover:underline',
       outline:
         'border border-secondary bg-transparent hover:bg-secondary hover:text-secondary-foreground',
-      ghost: 'border-none bg-transparent hover:bg-secondary',
+      ghost: 'border-none bg-transparent',
       transparent: 'bg-transparent hover:bg-transparent'
     },
 
     size: {
       xs: 'w-[52px] min-w-[52px] gap-1 p-1 text-xs',
       sm: 'gap-1 px-3 py-2 text-xs',
-      md: 'gap-2 rounded-[4px] py-0.5 pl-1.5 pr-0.5 text-sm',
+      md: 'h-9 gap-2 rounded-md px-4 py-0.5 py-2 text-sm',
+      // md: 'gap-2 rounded-[4px] py-0.5 pl-1.5 pr-0.5 text-sm',
       lg: 'gap-3 px-7 py-3.5 text-base',
       xl: 'gap-2 px-6 text-base',
       icon: 'size-11 rounded-[15px] p-0 transition-none horizontal center'
@@ -84,13 +85,13 @@ const buttonVariants = tv({
     {
       color: 'default',
       variant: 'ghost',
-      className: 'bg-transparent text-foreground hover:bg-foreground/10'
+      className: 'bg-transparent text-foreground/90 hover:bg-foreground/5'
     },
     {
       color: 'default',
       active: true,
       variant: 'ghost',
-      className: 'bg-foreground/20 hover:bg-foreground/20'
+      className: 'bg-foreground/10 text-foreground hover:bg-foreground/10'
     },
     {
       color: 'default',
@@ -157,6 +158,7 @@ export const Button = forwardRef<HTMLButtonElement, React.PropsWithChildren<Butt
       fill,
       size,
       round,
+      active,
       ...props
     },
     ref
@@ -169,6 +171,7 @@ export const Button = forwardRef<HTMLButtonElement, React.PropsWithChildren<Butt
         color,
         round,
         fill,
+        active,
         size,
         className
       })}

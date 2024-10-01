@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'relative flex size-full h-full flex-1 bg-background font-sans text-foreground antialiased',
+          'relative flex size-full h-full flex-1 bg-secondary font-sans text-foreground antialiased',
           fontSans.variable,
           fontMono.variable
         )}

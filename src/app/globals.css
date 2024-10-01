@@ -4,7 +4,8 @@
 
 @layer base {
   :root {
-    --background: 23 23 23;
+    /* --background: 31 31 31; */
+    --background: 32 32 32;
     --foreground: 245 245 240;
 
     --card: 38 38 38;
@@ -16,9 +17,11 @@
     --primary: var(--foreground);
     --primary-foreground: var(--background);
 
+    /* --secondary: 32 32 32; */
     --secondary: 38 38 38;
     --secondary-foreground: var(--foreground);
 
+    /* --muted: 32 32 32; */
     --muted: 38 38 38;
     --muted-foreground: 115 115 115;
 

@@ -5,24 +5,17 @@ export default function Home() {
     <div className="flex-1 vertical">
       <div className="flex-1 center vertical">
         <div className="text-center">
-          <h1 className="relative text-balance text-center font-black sm:text-5xl md:text-6xl lg:text-8xl">
-            {/* Stiqq. Organize. Achieve. */}
-            <span className="relative text-primary">
-              {/* <Icons.Sparkles className="absolute -left-10 -bottom-2 size-16 fill-yellow-300 text-background" /> */}
-              Stiqq
-              <Icons.Sparkles className="absolute -left-8 -top-10 size-12 fill-sky-300 text-transparent" />
-              {/* <Icons.Sparkles className="absolute -top-6 -right-10 size-16 fill-sky-300 text-transparent" /> */}
-            </span>
+          <h1 className="relative text-balance bg-gradient-to-r from-sky-300 to-blue-500 text-center font-black text-gradient sm:text-5xl md:text-6xl lg:text-8xl">
+            Stiqq&nbsp;
+            <Icons.Sparkles className="absolute -left-8 -top-10 size-12 text-sky-300" />
             Your Tasks
-            <br /> Boost Your <span className="text-sky-300">Flow</span>
+            <br /> Boost Your <span className=" ">Flow</span>
           </h1>
 
-          <p className="text-balance text-center text-lg font-medium tracking-tight text-muted-foreground md:text-xl">
+          <p className="max-w-[55ch] text-balance text-lg font-medium tracking-tight text-muted-foreground md:text-2xl">
             Meet Stiqqr, the next-gen task management tool that lets you stick to what’s important.
           </p>
         </div>
-
-        
       </div>
     </div>
   );

@@ -14,7 +14,13 @@ export const ActiveLink = ({ href, className, ...props }: ActiveLinkProps) => {
   return (
     <ButtonLink
       href={href}
-      className={cn(active ? '[&>svg>*]:fill-current' : '[&>svg>*]:stroke-current', className)}
+      variant="ghost"
+      fill
+      className={cn(
+        'justify-start horizontal',
+        // active ? '[&>svg>*]:fill-current' : '[&>svg>*]:stroke-current',
+        className
+      )}
       {...props}
       active={active}
     />

@@ -29,4 +29,5 @@ export interface Project {
   name: string;
   description: string;
   members: Member[];
+  id: string;
 }

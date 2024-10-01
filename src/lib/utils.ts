@@ -13,3 +13,18 @@ export const getBaseUrl = () => {
 };
 
 export const generateUuid = () => crypto.randomUUID();
+
+export const encodeUrlPath = (path: string) => {
+  const encodedPath = encodeURIComponent(path.toLowerCase().replace('#', ''));
+
+  return encodedPath.split('%20').join('-');
+};
+
+export const decodeUrlPath = (path: string) => {
+  return decodeURIComponent(path.split('-').join(' '));
+};
+
+
+export const keys = <T extends object>(obj: T) => Object.keys(obj) as Array<keyof T>;
+
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);

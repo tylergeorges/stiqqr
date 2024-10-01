@@ -4,18 +4,28 @@ import { type VariantProps, tv } from 'tailwind-variants';
 
 import { cn } from '@/lib/utils';
 
-const avatar = tv({
-  base: 'relative aspect-square overflow-hidden rounded-full terminal:rounded-none',
+const avatarVariants = tv({
+  slots: {
+    avatar: 'terminal:rounded-none relative aspect-square overflow-hidden rounded-full',
+    avatarStack: 'relative horizontal child:text-foreground/40 child:ring-2 child:ring-current'
+  },
 
   variants: {
     size: {
-      xs: 'h-2 w-2',
-      sm: 'h-3 w-3',
-      md: 'size-8',
-      lg: 'size-10',
-      xl: 'size-12',
-      '2xl': 'size-16',
-      '3xl': 'size-20'
+      xs: { avatar: 'size-2' },
+      sm: { avatar: 'size-5' },
+      // sm: { avatar: 'size-3' },
+      md: { avatar: 'size-6' },
+      lg: { avatar: 'size-10' },
+      xl: { avatar: 'size-12' },
+      '2xl': { avatar: 'size-16' },
+      '3xl': { avatar: 'size-20' }
+    },
+    spacing: {
+      tight: { avatarStack: '-space-x-6' },
+      normal: { avatarStack: '-space-x-4' },
+      looser: { avatarStack: '-space-x-3' },
+      loose: { avatarStack: '-space-x-2' }
     }
   },
 
@@ -23,6 +33,8 @@ const avatar = tv({
     size: 'md'
   }
 });
+
+const { avatar, avatarStack } = avatarVariants();
 
 export type AvatarVariants = VariantProps<typeof avatar>;
 
@@ -64,7 +76,7 @@ export const AvatarFallback = forwardRef<HTMLDivElement, AvatarFallbackProps>(
     <div
       {...props}
       className={cn(
-        'flex aspect-square h-full w-auto items-center justify-center bg-muted',
+        'flex aspect-square h-full w-auto items-center justify-center bg-muted font-medium',
         className
       )}
       ref={ref}
@@ -73,3 +85,38 @@ export const AvatarFallback = forwardRef<HTMLDivElement, AvatarFallbackProps>(
 );
 
 AvatarFallback.displayName = 'AvatarFallback';
+
+interface AvatarComponent
+  extends React.ComponentElement<AvatarProps, React.Component<AvatarProps>> {}
+
+export interface AvatarStackProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof avatarStack> {
+  maxAvatars?: number;
+  hideCount?: boolean;
+  children: AvatarComponent[] | AvatarComponent;
+}
+
+export const AvatarStack = forwardRef<HTMLDivElement, AvatarStackProps>(
+  ({ className, hideCount, children: avatars, maxAvatars = 3, ...props }, ref) => {
+    if (!Array.isArray(avatars) || avatars.length <= 1) return avatars;
+
+    const shownAvatars = avatars.slice(0, maxAvatars);
+    const hiddenAvatars = avatars.slice(maxAvatars);
+    const { size = avatars[0].props.size, spacing = 'normal' } = props;
+
+    return (
+      <div {...props} className={avatarStack({ spacing, className })} ref={ref}>
+        {shownAvatars}
+
+        {!hideCount && hiddenAvatars.length ? (
+          <Avatar size={size}>
+            <AvatarFallback>+{hiddenAvatars.length}</AvatarFallback>
+          </Avatar>
+        ) : null}
+      </div>
+    );
+  }
+);
+
+AvatarStack.displayName = 'AvatarStack';

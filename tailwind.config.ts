@@ -8,7 +8,8 @@ import TailwindAnimated from 'tailwindcss-animated';
 import {
   TailwindChildren,
   TailwindFlexible,
-  generateScreens
+  generateScreens,
+  TailwindGradientText
 } from './src/lib/tailwind/tailwind-plugins';
 
 const config: Config = {
@@ -129,6 +130,7 @@ const config: Config = {
   },
 
   plugins: [
+    TailwindGradientText,
     TailwindFlexible,
     TailwindAnimated,
     TailwindTypography,
