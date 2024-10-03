@@ -6,15 +6,14 @@ import { cn } from '@/lib/utils';
 
 const avatarVariants = tv({
   slots: {
-    avatar: 'terminal:rounded-none relative aspect-square overflow-hidden rounded-full',
+    avatar: 'terminal:rounded-none relative aspect-square overflow-hidden rounded-full horizontal center',
     avatarStack: 'relative horizontal child:text-foreground/40 child:ring-2 child:ring-current'
   },
 
   variants: {
     size: {
       xs: { avatar: 'size-2' },
-      sm: { avatar: 'size-5' },
-      // sm: { avatar: 'size-3' },
+      sm: { avatar: 'size-4 rounded-[4px]' },
       md: { avatar: 'size-6' },
       lg: { avatar: 'size-10' },
       xl: { avatar: 'size-12' },
@@ -30,7 +29,7 @@ const avatarVariants = tv({
   },
 
   defaultVariants: {
-    size: 'md'
+    size: 'sm'
   }
 });
 

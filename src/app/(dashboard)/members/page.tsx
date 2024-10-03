@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { projects } from '@/lib/test-data';
@@ -14,6 +15,14 @@ import {
 import { AvatarStack } from '@/components/ui/avatar';
 import { CardContent, CardHeader } from '@/components/ui/card';
 import { DashboardPageContainer } from '@/components/dashboard-page-container';
+
+export const metadata: Metadata = {
+  title: {
+    absolute: 'Members',
+    default: 'Members'
+  },
+  description: 'View/manage your project members.'
+};
 
 export default function MembersPage() {
   return (

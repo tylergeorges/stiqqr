@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 const buttonVariants = tv({
   base: cn(
     'relative inline-flex w-fit cursor-pointer items-center whitespace-nowrap rounded-lg text-center text-sm text-white transition duration-300 ease-out',
-    'outline-none ring-primary focus-visible:ring-2',
+    'outline-none ring-primary ',
     'items-center justify-center overflow-hidden align-middle font-medium disabled:cursor-not-allowed disabled:opacity-50'
   ),
 
@@ -91,7 +91,7 @@ const buttonVariants = tv({
       color: 'default',
       active: true,
       variant: 'ghost',
-      className: 'bg-foreground/10 text-foreground hover:bg-foreground/10'
+      className: 'bg-foreground/10 text-foreground hover:bg-foreground/10 ring-0'
     },
     {
       color: 'default',

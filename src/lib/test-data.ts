@@ -110,7 +110,7 @@ export const task2: Task = {
 export const task3: Task = {
   createdAt: issueCreatedAt,
   updatedAt: issueCreatedAt,
-  labels: [improvementLabel],
+  labels: [improvementLabel, bugLabel],
   members: [member1, member2, member3],
   name: 'Improve design lorem ipsum fdsfsafsad fdsfasdfsa.',
   status: 'in-progress',

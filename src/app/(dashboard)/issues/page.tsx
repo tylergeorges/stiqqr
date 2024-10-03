@@ -1,5 +1,10 @@
 import { DashboardPageContainer } from '@/components/dashboard-page-container';
 import { TaskList } from '@/components/task-list';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Issues',
+};
 
 export default function IssuesPage() {
   return (

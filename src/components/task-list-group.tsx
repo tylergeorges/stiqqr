@@ -1,11 +1,11 @@
 'use client';
 
-import { Droppable } from '@hello-pangea/dnd';
+import { Draggable, Droppable } from '@hello-pangea/dnd';
 
 import type { Task, TaskGroup } from '@/types/project';
 import { cn } from '@/lib/utils';
 
-import { TaskListItem } from '@/components/task-list-item';
+import { renderTaskListItem } from '@/components/task-list-item';
 import { TaskStatusIndicator } from '@/components/task-status-indicator';
 
 interface TaskListGroupProps {
@@ -14,8 +14,10 @@ interface TaskListGroupProps {
 }
 
 export const TaskListGroup = ({ taskGroup, tasks }: TaskListGroupProps) => {
+  const renderItem = renderTaskListItem(tasks);
+
   return (
-    <Droppable droppableId={taskGroup.value}>
+    <Droppable droppableId={taskGroup.value} renderClone={renderItem}>
       {(droppableProvided, snapshot) => (
         <div
           ref={droppableProvided.innerRef}
@@ -32,7 +34,9 @@ export const TaskListGroup = ({ taskGroup, tasks }: TaskListGroupProps) => {
 
           <div className=" ">
             {tasks.map((task, idx) => (
-              <TaskListItem task={task} index={idx} key={task.name} />
+              <Draggable key={task.name} draggableId={task.name} index={idx} >
+                {renderItem}
+              </Draggable>
             ))}
           </div>
 

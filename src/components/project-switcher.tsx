@@ -20,8 +20,6 @@ import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
-interface ProjectSwitcherProps {}
-
 interface Project {
   value: string;
   label: string;
@@ -38,7 +36,7 @@ const projects: Project[] = [
   }
 ];
 
-export const ProjectSwitcher = ({}: ProjectSwitcherProps) => {
+export const ProjectSwitcher = () => {
   const [open, setOpen] = useState(false);
   const [showNewProjectDialog, setShowNewProjectDialog] = useState(false);
   const [selectedProject, setSelectedProject] = useState(projects[0]);
@@ -54,12 +52,13 @@ export const ProjectSwitcher = ({}: ProjectSwitcherProps) => {
             fill
             className="pr-4 text-sm text-foreground"
           >
-            <div className="horizontal center-v">
-              <Avatar className="mr-2 rounded-md">
-                <AvatarFallback className="rounded-md bg-muted-foreground" />
+            <div className="leading-none horizontal center-v">
+              <Avatar className="mr-2">
+                <AvatarFallback className="bg-primary" />
               </Avatar>
               {selectedProject.label}
             </div>
+
             <Icons.ChevronVert className="ml-auto size-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -75,10 +74,12 @@ export const ProjectSwitcher = ({}: ProjectSwitcherProps) => {
                       setSelectedProject(project);
                       setOpen(false);
                     }}
+                    className="leading-none"
                   >
-                    <Avatar className="mr-2 rounded-md">
-                      <AvatarFallback className="rounded-md bg-sky-400" />
+                    <Avatar className="mr-2">
+                      <AvatarFallback className="bg-sky-400" />
                     </Avatar>
+
                     {project.label}
 
                     <Icons.Check
