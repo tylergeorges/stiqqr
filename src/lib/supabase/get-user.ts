@@ -3,7 +3,7 @@
 import { cache } from 'react';
 
 import { insertUser, userById } from '@/lib/db/queries/user';
-import type { User } from '@/lib/db/schema';
+import type { User } from '@/lib/db/schema/users';
 import { createClient } from '@/lib/supabase/server';
 
 export const getAuthUser = async () => {

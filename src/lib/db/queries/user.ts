@@ -2,10 +2,10 @@
 
 import { cache } from 'react';
 
-import { eq,  } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
-import { type InsertUser, users } from '@/lib/db/schema';
+import { type InsertUser, users } from '@/lib/db/schema/users';
 
 export const userById = cache(async (userId: string) =>
   db.select().from(users).where(eq(users.id, userId))

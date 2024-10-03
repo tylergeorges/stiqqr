@@ -3,7 +3,7 @@
 import 'dotenv/config';
 import { type PostgresJsDatabase, drizzle } from 'drizzle-orm/postgres-js';
 import postgres, { type Sql } from 'postgres';
-import * as schema from './schema';
+import * as schema from './schema/index';
 
 let connection: Sql<{}>;
 

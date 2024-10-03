@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
-import { users } from '@/lib/db/schema';
+import { users } from '@/lib/db/schema/users';
 import { createClient } from '@/lib/supabase/server';
 
 export async function GET(req: NextRequest) {
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
           username: user.user_metadata.name,
           avatarUrl: user.user_metadata.avatar_url,
           id: user.id,
-          email: email
+          email: email,
         });
       }
 

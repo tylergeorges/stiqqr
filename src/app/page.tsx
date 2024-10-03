@@ -1,6 +1,15 @@
-import { Icons } from '@/components/icons';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
+import { getUser } from '@/lib/supabase/get-user';
+
+import { Icons } from '@/components/icons';
+import { LoginButton } from '@/components/login-button';
+
+export default async function Home() {
+  const user = await getUser();
+
+  if (user) return redirect('/issues');
+  
   return (
     <div className="flex-1 vertical">
       <div className="flex-1 center vertical">
@@ -15,6 +24,9 @@ export default function Home() {
           <p className="max-w-[55ch] text-balance text-lg font-medium tracking-tight text-muted-foreground md:text-2xl">
             Meet Stiqqr, the next-gen task management tool that lets you stick to what’s important.
           </p>
+
+
+          <LoginButton>Login</LoginButton>
         </div>
       </div>
     </div>
