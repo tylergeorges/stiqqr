@@ -1,45 +1,39 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { cn } from '@/lib/utils';
+import { useProjectsQuery } from '@/hooks/use-projects-query';
 
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Icons } from '@/components/icons';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { CreateProjectModal } from '@/components/modal/create-project-modal';
 
-interface Project {
-  value: string;
-  label: string;
+interface ProjectSwitcherProps {
+  memberId: string;
+  projectId: string;
 }
 
-const projects: Project[] = [
-  {
-    label: 'Test Project',
-    value: 'test-project'
-  },
-  {
-    label: 'Second Project',
-    value: 'second-project'
-  }
-];
+export const ProjectSwitcher = ({ memberId, projectId }: ProjectSwitcherProps) => {
+  const router = useRouter();
+  const { data: projects, error } = useSuspenseQuery(useProjectsQuery(memberId));
 
-export const ProjectSwitcher = () => {
   const [open, setOpen] = useState(false);
   const [showNewProjectDialog, setShowNewProjectDialog] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(projects[0]);
+
+  const [selectedProject, setSelectedProject] = useState(() =>
+    projects.find(p => p.project.id === projectId)
+  );
+
+  if (error) {
+    return;
+  }
 
   return (
     <Dialog open={showNewProjectDialog} onOpenChange={setShowNewProjectDialog}>
@@ -56,7 +50,7 @@ export const ProjectSwitcher = () => {
               <Avatar className="mr-2">
                 <AvatarFallback className="bg-primary" />
               </Avatar>
-              {selectedProject.label}
+              {selectedProject && selectedProject.project.name}
             </div>
 
             <Icons.ChevronVert className="ml-auto size-4 shrink-0 opacity-50" />
@@ -69,10 +63,13 @@ export const ProjectSwitcher = () => {
               <CommandGroup heading="Projects">
                 {projects.map(project => (
                   <CommandItem
-                    key={project.value}
+                    key={project.project.id}
                     onSelect={() => {
-                      setSelectedProject(project);
-                      setOpen(false);
+                      if (!selectedProject || selectedProject.project.id !== project.project.id) {
+                        router.push(`/${project.project.name}/issues`);
+                        setSelectedProject(project);
+                        setOpen(false);
+                      }
                     }}
                     className="leading-none"
                   >
@@ -80,43 +77,36 @@ export const ProjectSwitcher = () => {
                       <AvatarFallback className="bg-sky-400" />
                     </Avatar>
 
-                    {project.label}
+                    {project.project.name}
 
                     <Icons.Check
                       className={cn(
                         'ml-auto h-4 w-4',
-                        selectedProject.value === project.value ? 'opacity-100' : 'opacity-0'
+                        selectedProject?.project?.id === project.project.id
+                          ? 'opacity-100'
+                          : 'opacity-0'
                       )}
                     />
                   </CommandItem>
                 ))}
+
+                <CommandItem
+                  onSelect={() => {
+                    setShowNewProjectDialog(true);
+                    setOpen(false);
+                  }}
+                  className="leading-none"
+                >
+                  <Icons.Plus className="mr-2 size-4" />
+                  Create Project
+                </CommandItem>
               </CommandGroup>
             </CommandList>
           </Command>
         </PopoverContent>
       </Popover>
 
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Project</DialogTitle>
-          <DialogDescription>Create a new project.</DialogDescription>
-        </DialogHeader>
-        <div>
-          <div className="space-y-4 py-2 pb-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Project name</Label>
-              <Input id="name" placeholder="Acme Inc." />
-            </div>
-          </div>
-        </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setShowNewProjectDialog(false)}>
-            Cancel
-          </Button>
-          <Button type="submit">Create</Button>
-        </DialogFooter>
-      </DialogContent>
+      <CreateProjectModal setShowNewProjectDialog={setShowNewProjectDialog} />
     </Dialog>
   );
 };

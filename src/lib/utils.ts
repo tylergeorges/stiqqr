@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -24,7 +25,16 @@ export const decodeUrlPath = (path: string) => {
   return decodeURIComponent(path.split('-').join(' '));
 };
 
+export const entries = <T extends object>(obj: T) => Object.entries(obj) as [keyof T, T[keyof T]][];
 
 export const keys = <T extends object>(obj: T) => Object.keys(obj) as Array<keyof T>;
 
 export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
+// Takes an enum and return an array with each values
+export const enumToPgEnum = <T extends Record<string, any>>(
+  myEnum: T
+): [T[keyof T], ...T[keyof T][]] => {
+  // export const enumToPgEnum = <T>(myEnum: T): [string, ...string[]] => {
+  return Object.values(myEnum).map((value: any) => `${value}`) as any;
+};

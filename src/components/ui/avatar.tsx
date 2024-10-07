@@ -6,7 +6,8 @@ import { cn } from '@/lib/utils';
 
 const avatarVariants = tv({
   slots: {
-    avatar: 'terminal:rounded-none relative aspect-square overflow-hidden rounded-full horizontal center',
+    avatar:
+      'terminal:rounded-none relative aspect-square overflow-hidden rounded-full horizontal center',
     avatarStack: 'relative horizontal child:text-foreground/40 child:ring-2 child:ring-current'
   },
 

@@ -8,7 +8,7 @@ import TailwindAnimated from 'tailwindcss-animated';
 import {
   TailwindChildren,
   TailwindFlexible,
-  generateScreens,
+  // generateScreens,
   TailwindGradientText
 } from './src/lib/tailwind/tailwind-plugins';
 
@@ -23,10 +23,16 @@ const config: Config = {
   ],
 
   theme: {
-    screens: {
-      ...generateScreens({ sm: 640, md: 768, lg: 1024, xl: 1280 })
+    // screens: {
+    //   ...generateScreens({ sm: 640, md: 768, lg: 1024, xl: 1280 })
+    // },
+    container: {
+      center: true,
+      padding: "1.5rem",
+      screens: {
+        "2xl": "1400px",
+      },
     },
-
     extend: {
       typography: () => ({
         DEFAULT: {

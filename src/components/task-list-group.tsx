@@ -2,22 +2,28 @@
 
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 
-import type { Task, TaskGroup } from '@/types/project';
 import { cn } from '@/lib/utils';
+import type { Task } from '@/lib/db/queries/project';
 
 import { renderTaskListItem } from '@/components/task-list-item';
 import { TaskStatusIndicator } from '@/components/task-status-indicator';
+import { Icons } from '@/components/icons';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { CreateTaskModal } from '@/components/modal/create-task-modal';
+import { Status } from '@/lib/db/schema';
 
 interface TaskListGroupProps {
-  taskGroup: TaskGroup;
+  // taskGroup: TaskGroup;
   tasks: Task[];
+  status: Status;
+  projectId: string;
 }
 
-export const TaskListGroup = ({ taskGroup, tasks }: TaskListGroupProps) => {
+export const TaskListGroup = ({ status, tasks, projectId }: TaskListGroupProps) => {
   const renderItem = renderTaskListItem(tasks);
 
   return (
-    <Droppable droppableId={taskGroup.value} renderClone={renderItem}>
+    <Droppable droppableId={status} renderClone={renderItem}>
       {(droppableProvided, snapshot) => (
         <div
           ref={droppableProvided.innerRef}
@@ -27,14 +33,29 @@ export const TaskListGroup = ({ taskGroup, tasks }: TaskListGroupProps) => {
             snapshot.isDraggingOver && 'ring-opacity-100'
           )}
         >
-          <div className="w-full gap-2 bg-muted-foreground/10 px-4 py-2 font-medium horizontal center-v">
-            <TaskStatusIndicator status={taskGroup.value} />
-            {taskGroup.label}
+          <div className="w-full justify-between bg-muted-foreground/10 px-4 py-2 font-medium horizontal center-v">
+            <div className="gap-2 horizontal center-v">
+              <TaskStatusIndicator status={status} />
+
+              {status === Status.Backlog && 'Backlog'}
+              {status === Status.Canceled && 'Canceled'}
+              {status === Status.Done && 'Done'}
+              {status === Status.InProgress && 'In Progress'}
+              {status === Status.Todo && 'Todo'}
+            </div>
+
+            <Dialog>
+              <DialogTrigger>
+                <Icons.Plus className="text-muted-foreground/70 transition hover:text-muted-foreground" />
+              </DialogTrigger>
+
+              <CreateTaskModal status={status} projectId={projectId} />
+            </Dialog>
           </div>
 
-          <div className=" ">
+          <div>
             {tasks.map((task, idx) => (
-              <Draggable key={task.name} draggableId={task.name} index={idx} >
+              <Draggable key={task.title} draggableId={task.title} index={idx}>
                 {renderItem}
               </Draggable>
             ))}

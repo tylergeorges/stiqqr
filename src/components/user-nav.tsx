@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 
+import { useUser } from '@/hooks/use-user';
+
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Icons } from '@/components/icons';
 import {
   DropdownMenu,
@@ -18,6 +20,8 @@ import {
 export const UserNav = () => {
   const [open, setOpen] = useState(false);
 
+  const { data: user, isLoading } = useUser();
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
@@ -29,8 +33,12 @@ export const UserNav = () => {
           className="pr-4 text-sm text-foreground center-v"
         >
           <div className="leading-none horizontal center-v">
-            <Avatar className="mr-2">
-              <AvatarFallback className="rounded-full bg-sky-400" />
+            <Avatar className="mr-2 rounded-full" size="md">
+              {isLoading || !user?.avatarUrl ? (
+                <AvatarFallback className="bg-sky-400" />
+              ) : (
+                <AvatarImage src={user?.avatarUrl} alt={`${user.username}'s Avatar.`} />
+              )}
             </Avatar>
             kneadle
           </div>

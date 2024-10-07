@@ -31,3 +31,15 @@ export interface Project {
   members: Member[];
   id: string;
 }
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  export type QueryReturnType<T extends (...args: any) => any> =
+    Awaited<ReturnType<T>> extends Array<infer U> ? Prettify<U> : Prettify<Awaited<ReturnType<T>>>;
+
+  export type Prettify<T> = {
+    [K in keyof T]: T[K];
+  } & {};
+}
+
+export type {};

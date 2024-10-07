@@ -3,12 +3,12 @@
 import { DraggableProvided, DraggableRubric, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import Link from 'next/link';
 
-import type { Task } from '@/types/project';
-import { cn, encodeUrlPath } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import type { Task } from '@/lib/db/queries/project';
 
 import { TaskStatusIndicator } from '@/components/task-status-indicator';
 import { ShortTimestamp } from '@/components/ui/timestamp';
-import { Avatar, AvatarFallback, AvatarImage, AvatarStack } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface TaskListItemProps {
   task: Task;
@@ -27,52 +27,53 @@ export const TaskListItem = ({ task, provided, snapshot }: TaskListItemProps) =>
       {...provided.draggableProps}
       {...provided.dragHandleProps}
       ref={provided.innerRef}
-      href={`/${encodeUrlPath(task.project.name)}/issue/${encodeUrlPath(task.name)}`}
+      href={`/${task.projectId}/issue/${task.id}`}
     >
       <div className="horizontal center-v">
         <TaskStatusIndicator status={task.status} />
 
-        <div className="ml-2">{task.name}</div>
+        <div className="ml-2">{task.title}</div>
       </div>
 
       <div className="space-x-2 text-foreground/40 horizontal">
         {task.labels.map(label => (
-          <div key={label.value} className="px-2 text-xs horizontal center-v">
+          <div key={label.name} className="px-2 text-xs horizontal center-v">
             <div
               className="size-[9px] rounded-full bg-[var(--label-color)]"
               // @ts-expect-error - defining color variable
               style={{ '--label-color': label.color }}
             />
 
-            <span className="ml-1.5 mr-[1px] leading-[normal]">{label.value}</span>
+            <span className="ml-1.5 mr-[1px] leading-[normal]">{label.name}</span>
           </div>
         ))}
 
         <ShortTimestamp timestamp={task.createdAt} />
         <ShortTimestamp timestamp={task.updatedAt} />
 
-        <AvatarStack
+        {/* <AvatarStack
           maxAvatars={2}
           hideCount
           className={cn(task.members.length > 0 && 'child:text-primary child:ring-secondary')}
           spacing="loose"
-        >
-          {task.members.length ? (
-            task.members.map(member => (
-              <Avatar key={member.id} size="sm" className={cn('relative rounded-full')}>
-                {member?.avatarUrl ? (
-                  <AvatarImage src={member.avatarUrl} alt={`Avatar of ${member.username}`} />
-                ) : (
-                  <AvatarFallback className="rounded-full bg-muted-foreground" />
-                )}
-              </Avatar>
-            ))
-          ) : (
-            <Avatar size="sm" className={cn('relative rounded-full')}>
-              <AvatarFallback className="bg-muted-foreground" />
-            </Avatar>
-          )}
-        </AvatarStack>
+        > */}
+        {task.assignee ? (
+          <Avatar size="sm" className={cn('relative rounded-full')}>
+            {task.assignee?.member.avatarUrl ? (
+              <AvatarImage
+                src={task.assignee.member.avatarUrl}
+                alt={`Avatar of ${task.assignee.member.username}`}
+              />
+            ) : (
+              <AvatarFallback className="rounded-full bg-muted-foreground" />
+            )}
+          </Avatar>
+        ) : (
+          <Avatar size="sm" className={'relative rounded-full'}>
+            <AvatarFallback className="rounded-full border-2 border-dotted border-muted-foreground" />
+          </Avatar>
+        )}
+        {/* </AvatarStack> */}
       </div>
     </Link>
   );

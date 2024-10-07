@@ -1,92 +1,93 @@
 'use client';
 
-import { useMemo, useState } from 'react';
 import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
-import { capitalize, keys } from '@/lib/utils';
-import { tasks } from '@/lib/test-data';
-import type { TaskStatus, Task, GroupedTask } from '@/types/project';
+import { tasksQueryKey, useTasksQuery } from '@/hooks/use-tasks-query';
+import { entries } from '@/lib/utils';
+import type { GroupedTask } from '@/types/project';
+import { Status } from '@/lib/db/schema/projects';
 
 import { TaskListGroup } from '@/components/task-list-group';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { CreateTaskModal } from '@/components/modal/create-task-modal';
 
-const reorder = (list: Task[], start: number, end: number, groupLabel: TaskStatus): Task[] => {
-  const result = Array.from(list);
-  const [removed] = result.splice(start, 1);
+interface TaskListProps {
+  projectId: string;
+}
 
-  result.splice(end, 0, { ...removed, status: groupLabel });
-
-  return result;
-};
-
-const getGroupLabel = (group: TaskStatus) => {
-  if (group.includes('-')) {
-    return group.split('-').map(capitalize).join(' ');
-  }
-
-  return capitalize(group);
-};
-
-export const TaskList = () => {
-  const [projectTasks, setProjectTasks] = useState(tasks);
+export const TaskList = ({ projectId }: TaskListProps) => {
+  const { data: projectTasks } = useSuspenseQuery(useTasksQuery(projectId));
+  const queryClient = useQueryClient();
 
   const onDragEnd: OnDragEndResponder = result => {
     // dropped outside the list
     if (!result.destination) return;
+
     const { source, destination } = result;
 
-    const items = reorder(
-      projectTasks,
-      source.index,
-      destination.index,
-      destination.droppableId as TaskStatus
-    );
+    const start = source.index;
+    const end = destination.index;
+    const status = destination.droppableId as Status;
 
-    const state = { items };
+    const items = structuredClone(projectTasks);
 
-    setProjectTasks(state.items);
-  };
+    const prevGroupStatus = result.source.droppableId as Status;
+    const newGroupStatus = destination.droppableId as Status;
 
-  const groupedTasks = useMemo<GroupedTask>(() => {
-    const taskLookup = {} as GroupedTask;
+    const tasks = items[newGroupStatus].tasks;
 
-    for (let i = 0; i < projectTasks.length; i++) {
-      const projectTask = projectTasks[i];
-      const issueGroup = taskLookup[projectTask.status];
+    // same group
+    if (prevGroupStatus === newGroupStatus) {
+      const [removed] = tasks.splice(start, 1);
 
-      if (issueGroup === undefined) {
-        taskLookup[projectTask.status] = {
-          tasks: [],
-          group: { label: getGroupLabel(projectTask.status), value: projectTask.status }
-        };
+      tasks.splice(end, 0, { ...removed, status: status });
+
+      items[status].tasks = tasks;
+    } else {
+      const [removed] = items[prevGroupStatus].tasks.splice(start, 1);
+
+      items[newGroupStatus].tasks.splice(end, 0, { ...removed, status: newGroupStatus });
+
+      if (!items[prevGroupStatus].tasks.length) {
+        delete items[prevGroupStatus];
       }
-
-      taskLookup[projectTask.status].tasks.push(projectTask);
     }
 
-    return taskLookup;
-  }, [projectTasks]);
+    queryClient.setQueryData<GroupedTask>([...tasksQueryKey, projectId], items);
+  };
+
+  const tasks = entries(projectTasks);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className="rounded-t-xl border border-muted-foreground/20">
-        {keys(groupedTasks)
-          .toSorted(a => {
-            if (a === 'in-progress') return -1;
-            if (a === 'todo') return 0;
-            if (a === 'backlog') return 1;
-
-            return 4;
-          })
-          .map(issueGroupKey => {
+    <div className="size-full flex-1">
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className="rounded-t-xl border border-muted-foreground/20">
+          {tasks.map(([status, group]) => {
             return (
               <TaskListGroup
-                key={issueGroupKey}
-                taskGroup={groupedTasks[issueGroupKey].group}
-                tasks={groupedTasks[issueGroupKey].tasks}
+                key={status}
+                projectId={projectId}
+                status={status}
+                tasks={group.tasks}
               />
             );
           })}
-      </div>
-    </DragDropContext>
+        </div>
+      </DragDropContext>
+
+      {!tasks.length ? (
+        <div className="size-full flex-1 horizontal center">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Create new issue</Button>
+            </DialogTrigger>
+
+            <CreateTaskModal projectId={projectId} />
+          </Dialog>
+        </div>
+      ) : null}
+    </div>
   );
 };

@@ -9,7 +9,7 @@ type ActiveLinkProps = React.ComponentProps<typeof ButtonLink>;
 export const ActiveLink = ({ href, className, ...props }: ActiveLinkProps) => {
   const path = usePathname();
 
-  const active = path === href;
+  const active = path.includes(href as string);
 
   return (
     <ButtonLink

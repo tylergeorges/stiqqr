@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { cn } from '@/lib/utils';
-import { member1, member2, member3 } from '@/lib/test-data';
+import { useProjectMembersQuery } from '@/hooks/use-project-members-query';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
@@ -16,24 +17,19 @@ import {
   CommandList
 } from '@/components/ui/command';
 import { Icons } from '@/components/icons';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-interface Assignee {
-  label: string;
-  value: string;
-  avatarUrl?: string;
+interface AssigneeSwitcherProps extends React.ComponentProps<typeof PopoverContent> {
+  projectId: string;
 }
-const assignees = [
-  { label: member1.username, value: member1.id },
-  { label: member2.username, value: member2.id },
-  { label: member3.username, value: member3.id }
-] satisfies Assignee[];
 
-export const AssigneeSwitcher = () => {
+export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwitcherProps) => {
+  const { data: assignees } = useSuspenseQuery(useProjectMembersQuery(projectId));
+
   const [currentAssignee, setAssignee] = useState<string>();
 
   const currentAssigneeLabel = currentAssignee
-    ? assignees.find(a => a.value === currentAssignee)?.label
+    ? assignees.find(a => a.member.id === currentAssignee)?.member?.username
     : '';
 
   return (
@@ -61,7 +57,8 @@ export const AssigneeSwitcher = () => {
       <PopoverContent
         side="left"
         align="start"
-        className="w-[235px] border border-muted-foreground/10 px-0"
+        className={cn('w-[235px] border border-muted-foreground/10 px-0', className)}
+        {...props}
       >
         <Command>
           <CommandInput placeholder="Search members..." />
@@ -72,26 +69,33 @@ export const AssigneeSwitcher = () => {
               {assignees.map(assignee => (
                 <CommandItem
                   className="justify-between horizontal"
-                  key={assignee.value}
+                  key={assignee.member.id}
                   onSelect={() => {
-                    setAssignee(assignee.value);
+                    setAssignee(assignee.member.id);
                   }}
                 >
                   <div className="horizontal center-v">
                     <Avatar className="mr-2 rounded-md" size="md">
-                      <AvatarFallback className="bg-muted-foreground font-bold">
-                        {assignee.label[0].toUpperCase()}
-                      </AvatarFallback>
+                      {assignee.member.avatarUrl ? (
+                        <AvatarImage
+                          src={assignee.member.avatarUrl}
+                          alt={`${assignee.member.username}'s Avatar.`}
+                        />
+                      ) : (
+                        <AvatarFallback className="bg-muted-foreground font-bold">
+                          {assignee.member.username[0].toUpperCase()}
+                        </AvatarFallback>
+                      )}
                     </Avatar>
 
-                    {assignee.label}
+                    {assignee.member.username}
                   </div>
 
                   {
                     <div
                       className={cn(
                         'aspect-square size-4 rounded-full bg-emerald-400 horizontal center',
-                        assignee.value === currentAssignee ? 'opacity-100' : 'opacity-0'
+                        assignee.member.id === currentAssignee ? 'opacity-100' : 'opacity-0'
                       )}
                     >
                       <Icons.Check className={'size-4 text-background'} />

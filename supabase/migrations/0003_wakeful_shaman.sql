@@ -1,0 +1,1 @@
+ALTER TABLE "project_members" ALTER COLUMN "roles" SET NOT NULL;

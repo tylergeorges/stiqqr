@@ -1,6 +1,5 @@
-import { Member, Project } from '@/types';
-
-export type TaskStatus = 'todo' | 'done' | 'in-progress' | 'backlog' | 'canceled';
+import { Task } from '@/lib/db/queries/project';
+import { Status } from '@/lib/db/schema';
 
 export interface TaskLabel {
   color: string;
@@ -8,18 +7,19 @@ export interface TaskLabel {
 }
 
 export interface TaskGroup {
-  value: TaskStatus;
+  value: Status;
   label: string;
 }
 
-export interface Task {
-  name: string;
-  status: TaskStatus;
-  members: Member[];
-  labels: TaskLabel[];
-  createdAt: Date;
-  updatedAt: Date;
-  project: Project;
-}
+// export interface Task {
+//   name: string;
+//   status: Status;
+//   assignee: ProjectMember;
+//   labels: ProjectLabel[];
+//   createdAt: Date;
+//   updatedAt: Date;
+//   project: Project;
+// }
 
-export type GroupedTask = Record<TaskStatus, { tasks: Task[]; group: TaskGroup }>;
+export type GroupedTask = Record<Status, { tasks: Task[] }>;
+// export type GroupedTask = Record<Status, { tasks: Task[]; group: TaskGroup }>;

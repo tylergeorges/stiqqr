@@ -6,7 +6,6 @@ import { Button, ButtonProps } from '@/components/ui/button';
 
 export const LoginButton = ({
   disabled,
-  color = 'white',
   onClick,
   ...props
 }: React.PropsWithChildren<ButtonProps>) => {
@@ -25,7 +24,6 @@ export const LoginButton = ({
 
         signIn('google');
       }}
-      color={color}
       disabled={disabled || isProviderLoading}
       {...props}
     ></Button>
