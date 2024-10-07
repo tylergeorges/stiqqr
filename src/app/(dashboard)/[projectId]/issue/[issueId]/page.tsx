@@ -1,13 +1,15 @@
+import { QueryClient } from '@tanstack/react-query';
+import { redirect } from 'next/navigation';
+
 import type { PageProps } from '@/types';
 
-import { Editor } from '@/components/editor';
-import { QueryClient } from '@tanstack/react-query';
 import { projectQueryKey } from '@/hooks/use-project-query';
 import { getUser } from '@/lib/supabase/get-user';
-import { Project } from '@/lib/db/queries/project';
-import { redirect } from 'next/navigation';
+import type { Project } from '@/lib/db/queries/project';
 import { useTaskQuery } from '@/hooks/use-task-query';
+
 import { IssueEditorSidebar } from '@/components/issue-editor-sidebar';
+import { ExpandedEditor } from '@/components/expanded-editor';
 
 export default async function ProjectIssuePage({
   params
@@ -35,9 +37,7 @@ export default async function ProjectIssuePage({
             <p className="font-medium">{project?.project.name}</p>
           </div>
 
-          <div className="relative mx-auto size-full max-w-[76ch] overflow-y-auto">
-            <Editor issueTitle={task.title} desc={task.description}></Editor>
-          </div>
+          <ExpandedEditor projectId={params.projectId} taskId={task.id} task={task} />
         </div>
 
         <IssueEditorSidebar task={task} projectId={params.projectId} />

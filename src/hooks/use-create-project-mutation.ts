@@ -19,10 +19,10 @@ export const useCreateProjectMutation = () => {
 
       const prevProjects = queryClient.getQueryData<Project[]>(projectsQueryKey) ?? [];
 
-      queryClient.setQueryData<Project[]>(projectsQueryKey, projects => [
-        ...(projects || prevProjects),
-        project
-      ]);
+      queryClient.setQueryData<Project[]>(
+        projectsQueryKey,
+        projects => [...(projects || prevProjects), project] as Project[]
+      );
 
       return { prevProjects };
     },

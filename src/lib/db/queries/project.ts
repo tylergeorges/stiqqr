@@ -4,7 +4,15 @@ import { eq, asc, and } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 
 import { db } from '@/lib/db';
-import { InsertProject, InsertTask, projectMembers, projects, Role, tasks } from '@/lib/db/schema';
+import {
+  InsertProject,
+  InsertTask,
+  projectMembers,
+  projects,
+  Role,
+  Status,
+  tasks
+} from '@/lib/db/schema';
 
 export const getProjectInfo = async (projectId: string, memberId: string) => {
   return db.query.projectMembers.findFirst({
@@ -16,7 +24,6 @@ export const getProjectInfo = async (projectId: string, memberId: string) => {
     },
 
     with: {
-      
       project: {
         columns: {
           name: true,
@@ -101,6 +108,23 @@ export const addMemberToProject = async (inviteCode: string, memberId: string) =
   return getProjectInfo(project.id, projectMember.memberId);
 };
 
+export const updateTask = async ({
+  description,
+  taskId,
+  title,
+  assigneeId,
+  status,
+  projectId
+}: UpdateTask) => {
+  await db
+    .update(tasks)
+    .set({ title, assigneeId, description, projectId, status })
+    .where(eq(tasks.id, taskId));
+  // .returning();
+
+  // return getTaskInfo(task.projectId, task.id);
+};
+
 export const insertTask = async ({
   description,
   projectId,
@@ -108,8 +132,6 @@ export const insertTask = async ({
   assigneeId,
   status
 }: InsertTask) => {
-  // const defaultTaskId = randomUUID();
-
   const [task] = await db
     .insert(tasks)
     .values({ description, projectId, title, assigneeId, status })
@@ -196,3 +218,12 @@ export const getProjectMembers = async (projectId: string) =>
 export type Project = Prettify<NonNullable<QueryReturnType<typeof getProjectInfo>>>;
 
 export type Task = Prettify<NonNullable<QueryReturnType<typeof getTaskInfo>>>;
+
+export type UpdateTask = {
+  title?: string;
+  description?: string;
+  assigneeId?: string;
+  status?: Status;
+  taskId: string;
+  projectId: string;
+};

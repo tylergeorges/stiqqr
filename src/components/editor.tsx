@@ -16,6 +16,7 @@ import Italic from '@tiptap/extension-italic';
 import History from '@tiptap/extension-history';
 import Placeholder from '@tiptap/extension-placeholder';
 import { forwardRef, useImperativeHandle } from 'react';
+import { useDebounceCallback } from '@/hooks/use-debounced-callback';
 
 export interface EditorInstance {
   getTitle: () => string | undefined;
@@ -26,6 +27,7 @@ export interface EditorInstance {
 interface EditorProps {
   issueTitle?: string;
   desc?: string | null;
+  onUpdate?: (title?: string, description?: string) => void;
 }
 
 const Title = Heading.extend({
@@ -63,132 +65,173 @@ const DocumentWithTitle = Document.extend({
   content: 'title block+'
 });
 
-export const Editor = forwardRef<EditorInstance, EditorProps>(({ issueTitle, desc }, ref) => {
-  const editor = useEditor({
-    immediatelyRender: false,
-    editorProps: {
-      attributes: {
-        class: 'outline-none focus-visible:outline-none relative'
+export const Editor = forwardRef<EditorInstance, EditorProps>(
+  ({ issueTitle, desc, onUpdate }, ref) => {
+    const debouncedOnUpdate = useDebounceCallback(onUpdate ? onUpdate : () => {}, 500);
+
+    const getTitle = (editor: EditorType) => {
+      if (!editor) return;
+      const headingNode = editor.state.doc.child(0);
+      const title = headingNode.firstChild?.text;
+
+      if (!title) return;
+
+      const titleOffset = title.length + 2;
+
+      return editor.state.doc.textBetween(0, titleOffset);
+    };
+
+    const getDescription = (editor: EditorType) => {
+      if (!editor) return;
+      const headingNode = editor.state.doc.child(0);
+
+      const title = headingNode.firstChild?.text;
+
+      const editorContent = editor.getText({ blockSeparator: '\n\n' });
+
+      if (!title) {
+        return editorContent.substring(1);
       }
-    },
-    extensions: [
-      DocumentWithTitle,
-      Paragraph,
-      Text,
-      Title,
-      Bold,
-      Italic,
-      History,
-      Heading.extend({
-        renderHTML({ node, HTMLAttributes }) {
-          const level = this.options.levels.includes(node.attrs.level)
-            ? node.attrs.level
-            : this.options.levels[0];
 
-          const classes: { [index: number]: string } = {
-            1: 'text-[22px] font-semibold relative',
-            2: 'text-[19px] font-semibold relative',
-            3: 'text-[17px] font-semibold relative',
-            4: 'font-semibold relative'
-          };
+      const titleOffset = title.length;
 
-          return [
-            `h${level}`,
-            mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
-              class: `${classes[level]}`
-            }),
-            0
-          ];
-        },
-        renderText({ node }) {
-          if (!node.textContent?.trim()) return '';
+      return editorContent.substring(titleOffset + 2);
+    };
 
-          const levels = {
-            1: '#',
-            2: '##',
-            3: '###',
-            4: '####'
-          };
+    const editor = useEditor({
+      immediatelyRender: false,
+      editorProps: {
+        attributes: {
+          class: 'outline-none focus-visible:outline-none relative'
+        }
+      },
+      onUpdate: props => {
+        if (!onUpdate) return;
 
-          const level = levels[node.attrs.level as keyof typeof levels];
+        const title = getTitle(props.editor);
+        const description = getDescription(props.editor);
 
-          return `${level} ${node.textContent}`;
-        },
+        debouncedOnUpdate(title, description);
+      },
+      extensions: [
+        DocumentWithTitle,
+        Paragraph,
+        Text,
+        Title,
+        Bold,
+        Italic,
+        History,
+        Heading.extend({
+          renderHTML({ node, HTMLAttributes }) {
+            const level = this.options.levels.includes(node.attrs.level)
+              ? node.attrs.level
+              : this.options.levels[0];
 
-        addInputRules() {
-          return this.options.levels.map((level: number) => {
-            return textblockTypeInputRule({
-              find: new RegExp(`^(#{1,${level}}) $`),
-              type: this.type,
-              getAttributes: {
-                level
-              }
+            const classes: { [index: number]: string } = {
+              1: 'text-[22px] font-semibold relative',
+              2: 'text-[19px] font-semibold relative',
+              3: 'text-[17px] font-semibold relative',
+              4: 'font-semibold relative'
+            };
+
+            return [
+              `h${level}`,
+              mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+                class: `${classes[level]}`
+              }),
+              0
+            ];
+          },
+          renderText({ node }) {
+            if (!node.textContent?.trim()) return '';
+
+            const levels = {
+              1: '#',
+              2: '##',
+              3: '###',
+              4: '####'
+            };
+
+            const level = levels[node.attrs.level as keyof typeof levels];
+
+            return `${level} ${node.textContent}`;
+          },
+
+          addInputRules() {
+            return this.options.levels.map((level: number) => {
+              return textblockTypeInputRule({
+                find: new RegExp(`^(#{1,${level}}) $`),
+                type: this.type,
+                getAttributes: {
+                  level
+                }
+              });
             });
-          });
-        }
-      }).configure({ levels: [1, 2, 3, 4] }),
-
-      Placeholder.configure({
-        showOnlyCurrent: false,
-        emptyNodeClass:
-          'cursor-text before:content-[attr(data-placeholder)] before:absolute before:top-0 before:left-0 before:text-mauve-11 before:opacity-50 before-pointer-events-none relative before:top-0 before:left-0',
-        placeholder: ({ node }) => {
-          if (node.type.name === 'title') {
-            return 'Issue title';
           }
+        }).configure({ levels: [1, 2, 3, 4] }),
 
-          return 'Add description...';
-        }
-      })
-    ],
+        Placeholder.configure({
+          showOnlyCurrent: false,
+          emptyNodeClass:
+            'cursor-text before:content-[attr(data-placeholder)] before:absolute before:top-0 before:left-0 before:text-mauve-11 before:opacity-50 before-pointer-events-none relative before:top-0 before:left-0',
+          placeholder: ({ node }) => {
+            if (node.type.name === 'title') {
+              return 'Issue title';
+            }
 
-    content: `
+            return 'Add description...';
+          }
+        })
+      ],
+
+      content: `
     <h1>${issueTitle ?? ''}</h1>
     <p>${desc ?? ''}</p>
     `
-  });
+    });
 
-  useImperativeHandle(ref, () => {
-    return {
-      getEditor: () => {
-        if (editor) return editor;
-      },
-      getTitle: () => {
-        if (!editor) return;
-        const headingNode = editor.state.doc.child(0);
-        const title = headingNode.firstChild?.text;
+    useImperativeHandle(ref, () => {
+      return {
+        getEditor: () => {
+          if (editor) return editor;
+        },
+        getTitle: () => {
+          if (!editor) return;
+          const headingNode = editor.state.doc.child(0);
+          const title = headingNode.firstChild?.text;
 
-        if (!title) return;
+          if (!title) return;
 
-        const titleOffset = title.length + 2;
+          const titleOffset = title.length + 2;
 
-        return editor.state.doc.textBetween(0, titleOffset);
-      },
-      getDescription: () => {
-        if (!editor) return;
-        const headingNode = editor.state.doc.child(0);
+          return editor.state.doc.textBetween(0, titleOffset);
+        },
+        getDescription: () => {
+          if (!editor) return;
+          const headingNode = editor.state.doc.child(0);
 
-        const title = headingNode.firstChild?.text;
+          const title = headingNode.firstChild?.text;
 
-        const editorContent = editor.getText();
+          const editorContent = editor.getText();
 
-        if (!title) {
-          return editorContent.substring(1);
+          if (!title) {
+            return editorContent.substring(1);
+          }
+
+          const titleOffset = title.length;
+
+          return editorContent.substring(titleOffset + 2);
         }
+      } as EditorInstance;
+    });
 
-        const titleOffset = title.length;
-
-        return editorContent.substring(titleOffset + 2);
-      }
-    } as EditorInstance;
-  });
-
-  return (
-    <EditorContent
-      editor={editor}
-      className="prose relative max-w-full text-[15px] outline-none focus-visible:outline-none prose-p:mt-0 prose-p:text-foreground"
-    />
-  );
-});
+    return (
+      <EditorContent
+        editor={editor}
+        className="prose relative max-w-full text-[15px] outline-none focus-visible:outline-none prose-p:mt-0 prose-p:text-foreground"
+      />
+    );
+  }
+);
 
 Editor.displayName = 'Editor';
