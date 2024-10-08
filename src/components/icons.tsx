@@ -21,6 +21,16 @@ export const Icons = {
       <path d="M10 16s.8 1 2 1c1.3 0 2-1 2-1" />
     </svg>
   ),
+  Clipboard: ({ ...props }: IconProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1zm-6 8a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1m1 3a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2z"
+        clipRule="evenodd"
+      />
+    </svg>
+  ),
   Plus: ({ ...props }: IconProps) => (
     <svg
       width="16"

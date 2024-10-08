@@ -38,3 +38,5 @@ export const enumToPgEnum = <T extends Record<string, any>>(
   // export const enumToPgEnum = <T>(myEnum: T): [string, ...string[]] => {
   return Object.values(myEnum).map((value: any) => `${value}`) as any;
 };
+
+export const createInviteUrl = (inviteCode: string) => `${getBaseUrl()}/invite/${inviteCode}`;

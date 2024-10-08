@@ -14,6 +14,7 @@ import { ActiveLink } from '@/components/active-link';
 import { Icons } from '@/components/icons';
 import { ProjectSwitcher } from '@/components/project-switcher';
 import { UserNav } from '@/components/user-nav';
+import { CommandMenu } from '@/components/command-menu';
 
 export const metadata: Metadata = {
   title: {
@@ -46,6 +47,8 @@ export default async function DashboardLayout({
   return (
     <div className="size-full flex-1 bg-secondary horizontal">
       <HydrationBoundary state={dehydrate(queryClient)}>
+        <CommandMenu />
+
         <Sidebar className="h-full w-72 justify-between border-r center-h vertical">
           <div className="mt-1 w-full vertical">
             <ProjectSwitcher memberId={user.id} projectId={projectId} />

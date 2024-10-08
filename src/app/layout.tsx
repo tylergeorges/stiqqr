@@ -7,7 +7,6 @@ import { fontMono, fontSans } from '@/lib/fonts';
 import { siteConfig } from '@/config/site';
 
 import { ReactQueryProvider } from '@/components/providers/react-query-provider';
-import { CommandMenu } from '@/components/command-menu';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -33,8 +32,14 @@ export default function RootLayout({
         )}
       >
         <ReactQueryProvider>
-          <Toaster />
-          <CommandMenu />
+          <Toaster
+            toastOptions={{
+              className: 'bg-card text-card-foreground border-foreground/20',
+              classNames: {
+                icon: 'text-muted-foreground'
+              }
+            }}
+          />
           {children}
         </ReactQueryProvider>
       </body>
