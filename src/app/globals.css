@@ -92,3 +92,29 @@
     text-wrap: balance;
   }
 }
+
+/* .ProseMirror .is-editor-empty:nth-child(2)::before {
+  content: attr(data-placeholder);
+  float: left;
+  pointer-events: none;
+  height: 0;
+} */
+
+.ProseMirror .is-editor-empty:first-child {
+  --conn: attr(data-placeholder);
+}
+
+.ProseMirror .is-editor-empty:first-child::before {
+  float: left;
+  pointer-events: none;
+  color: aliceblue;
+  --conn: attr(data-placeholder);
+}
+
+.ProseMirror .is-editor-empty:nth-child(2)::before {
+  --conn: attr(data-placeholder);
+  /* content: var(--tw-content); */
+  pointer-events: none;
+  display: inline-block;
+  color: aliceblue;
+}

@@ -18,16 +18,19 @@ import {
 } from '@/components/status-switcher';
 import { AssigneeSwitcher } from '@/components/assinee-switcher';
 import { Form } from '@/components/ui/form';
+import { useAppRouter } from '@/hooks/use-app-router';
 
 interface CreateTaskModalProps {
   status?: Status;
-  projectId: string;
+  projectId?: string;
 }
 
 export const CreateTaskModal = ({ status = Status.Todo, projectId }: CreateTaskModalProps) => {
+  const { projectId: routerProjectId } = useAppRouter();
+
   const statusForm = useTaskStatusForm(status);
 
-  const createTaskMutation = useCreateTaskMutation(projectId);
+  const createTaskMutation = useCreateTaskMutation(projectId ?? routerProjectId ?? '');
   const queryClient = useQueryClient();
 
   const editorRef = useRef<EditorInstance>(null!);
@@ -38,7 +41,7 @@ export const CreateTaskModal = ({ status = Status.Todo, projectId }: CreateTaskM
     const title = editor.getTitle();
     const description = editor.getDescription();
 
-    if (!editor || !projectId) return;
+    if (!editor || (!projectId && !routerProjectId)) return;
 
     if (!title) {
       toast.info('Title required', { description: 'Please enter a title before submtiting.' });
@@ -50,7 +53,7 @@ export const CreateTaskModal = ({ status = Status.Todo, projectId }: CreateTaskM
       {
         title: title,
         description: description,
-        projectId: projectId,
+        projectId: projectId ?? routerProjectId ?? '',
         status: data.status
       },
 
@@ -72,7 +75,7 @@ export const CreateTaskModal = ({ status = Status.Todo, projectId }: CreateTaskM
 
   return (
     <Form {...statusForm}>
-      <DialogContent>
+      <DialogContent >
         <DialogHeader>
           <DialogTitle>New issue</DialogTitle>
         </DialogHeader>
@@ -86,7 +89,11 @@ export const CreateTaskModal = ({ status = Status.Todo, projectId }: CreateTaskM
             <div className="horizontal center-v">
               <StatusSwitcher form={statusForm} status={status} side="bottom" align="center" />
 
-              <AssigneeSwitcher side="bottom" align="center" projectId={projectId} />
+              <AssigneeSwitcher
+                side="bottom"
+                align="center"
+                projectId={projectId ?? routerProjectId ?? ''}
+              />
             </div>
           </div>
 

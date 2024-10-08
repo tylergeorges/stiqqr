@@ -6,7 +6,8 @@ import { cn } from '@/lib/utils';
 import { fontMono, fontSans } from '@/lib/fonts';
 import { siteConfig } from '@/config/site';
 
-import { ReactQueryProvider } from '@/providers/react-query-provider';
+import { ReactQueryProvider } from '@/components/providers/react-query-provider';
+import { CommandMenu } from '@/components/command-menu';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -26,14 +27,14 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'relative flex size-full h-full flex-1 font-sans text-foreground antialiased',
+          'relative flex size-full h-full flex-1 bg-background font-sans text-foreground antialiased',
           fontSans.variable,
           fontMono.variable
         )}
       >
         <ReactQueryProvider>
           <Toaster />
-
+          <CommandMenu />
           {children}
         </ReactQueryProvider>
       </body>

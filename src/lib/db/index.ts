@@ -1,5 +1,4 @@
 /* eslint-disable no-var */
-/* eslint-disable @typescript-eslint/ban-types */
 import 'dotenv/config';
 import { type PostgresJsDatabase, drizzle } from 'drizzle-orm/postgres-js';
 import postgres, { type Sql } from 'postgres';

@@ -1,9 +1,10 @@
-import type { TaskStatus } from '@/types/project';
 import { cn } from '@/lib/utils';
+import { Status } from '@/lib/db/schema';
+
 import { Icons } from '@/components/icons';
 
 interface TaskStatusIndicatorProps {
-  status: TaskStatus;
+  status: Status;
   className?: string;
 }
 

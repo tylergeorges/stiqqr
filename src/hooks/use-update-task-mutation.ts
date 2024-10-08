@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { Task, updateTask, UpdateTask } from '@/lib/db/queries/project';
+import { updateTask, UpdateTask } from '@/lib/db/queries/project';
 
 import { taskQueryKey } from '@/hooks/use-task-query';
 

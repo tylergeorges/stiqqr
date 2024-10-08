@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
 export type LayoutProps<Params extends {} = Record<never, never>> = keyof Params extends never
   ? {
       children: React.ReactNode;

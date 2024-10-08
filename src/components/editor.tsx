@@ -100,6 +100,7 @@ export const Editor = forwardRef<EditorInstance, EditorProps>(
 
     const editor = useEditor({
       immediatelyRender: false,
+      autofocus: 'start',
       editorProps: {
         attributes: {
           class: 'outline-none focus-visible:outline-none relative'
@@ -115,7 +116,11 @@ export const Editor = forwardRef<EditorInstance, EditorProps>(
       },
       extensions: [
         DocumentWithTitle,
-        Paragraph,
+        Paragraph.configure({
+          HTMLAttributes: {
+            class: 'min-h-[1rem]'
+          }
+        }),
         Text,
         Title,
         Bold,
@@ -173,11 +178,13 @@ export const Editor = forwardRef<EditorInstance, EditorProps>(
         Placeholder.configure({
           showOnlyCurrent: false,
           emptyNodeClass:
-            'cursor-text before:content-[attr(data-placeholder)] before:absolute before:top-0 before:left-0 before:text-mauve-11 before:opacity-50 before-pointer-events-none relative before:top-0 before:left-0',
-          placeholder: ({ node }) => {
+            'cursor-text  before:absolute before:top-0 before:left-0 before:text-mauve-11 before:opacity-50 before-pointer-events-none relative before:top-0 before:left-0 before:content-[attr(data-placeholder)]',
+          placeholder: ({ node, editor }) => {
             if (node.type.name === 'title') {
               return 'Issue title';
             }
+
+            if (editor.state.doc.content.size > 4) return '';
 
             return 'Add description...';
           }
