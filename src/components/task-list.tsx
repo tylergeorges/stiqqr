@@ -6,7 +6,8 @@ import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { tasksQueryKey, useTasksQuery } from '@/hooks/use-tasks-query';
 import { entries } from '@/lib/utils';
 import type { GroupedTask } from '@/types/project';
-import { Status } from '@/lib/db/schema/projects';
+import { Role, Status } from '@/lib/db/schema/projects';
+import { useCurrentMember } from '@/hooks/use-current-member';
 
 import { TaskListGroup } from '@/components/task-list-group';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
@@ -20,6 +21,8 @@ interface TaskListProps {
 export const TaskList = ({ projectId }: TaskListProps) => {
   const { data: projectTasks } = useSuspenseQuery(useTasksQuery(projectId));
   const queryClient = useQueryClient();
+
+  const { data: member } = useSuspenseQuery(useCurrentMember());
 
   const onDragEnd: OnDragEndResponder = result => {
     // dropped outside the list
@@ -60,6 +63,8 @@ export const TaskList = ({ projectId }: TaskListProps) => {
 
   const tasks = entries(projectTasks);
 
+  const isAdmin = member.role === Role.Owner || member.role === Role.Admin;
+
   return (
     <div className="size-full flex-1">
       <DragDropContext onDragEnd={onDragEnd}>
@@ -71,13 +76,14 @@ export const TaskList = ({ projectId }: TaskListProps) => {
                 projectId={projectId}
                 status={status}
                 tasks={group.tasks}
+                isAdmin={isAdmin}
               />
             );
           })}
         </div>
       </DragDropContext>
 
-      {!tasks.length ? (
+      {!tasks.length && isAdmin ? (
         <div className="size-full flex-1 horizontal center">
           <Dialog>
             <DialogTrigger asChild>

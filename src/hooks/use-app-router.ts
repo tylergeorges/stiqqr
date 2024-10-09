@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 
 interface AppRoutes {
   projectId?: string;
-  issueName?: string;
+  issueId?: string;
 }
 
 export const useAppRouter = (): AppRoutes => {
@@ -14,6 +14,6 @@ export const useAppRouter = (): AppRoutes => {
 
   return {
     projectId: paths[1],
-    issueName: paths[3]
+    issueId: paths[3]
   };
 };

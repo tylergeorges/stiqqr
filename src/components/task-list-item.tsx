@@ -51,12 +51,6 @@ export const TaskListItem = ({ task, provided, snapshot }: TaskListItemProps) =>
         <ShortTimestamp timestamp={task.createdAt} />
         <ShortTimestamp timestamp={task.updatedAt} />
 
-        {/* <AvatarStack
-          maxAvatars={2}
-          hideCount
-          className={cn(task.members.length > 0 && 'child:text-primary child:ring-secondary')}
-          spacing="loose"
-        > */}
         {task.assignee ? (
           <Avatar size="sm" className={cn('relative rounded-full')}>
             {task.assignee?.member.avatarUrl ? (
@@ -73,7 +67,6 @@ export const TaskListItem = ({ task, provided, snapshot }: TaskListItemProps) =>
             <AvatarFallback className="rounded-full border-2 border-dotted border-muted-foreground" />
           </Avatar>
         )}
-        {/* </AvatarStack> */}
       </div>
     </Link>
   );

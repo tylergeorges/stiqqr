@@ -16,10 +16,11 @@ interface TaskListGroupProps {
   // taskGroup: TaskGroup;
   tasks: Task[];
   status: Status;
+  isAdmin: boolean;
   projectId: string;
 }
 
-export const TaskListGroup = ({ status, tasks, projectId }: TaskListGroupProps) => {
+export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGroupProps) => {
   const renderItem = renderTaskListItem(tasks);
 
   return (
@@ -44,13 +45,15 @@ export const TaskListGroup = ({ status, tasks, projectId }: TaskListGroupProps) 
               {status === Status.Todo && 'Todo'}
             </div>
 
-            <Dialog>
-              <DialogTrigger>
-                <Icons.Plus className="text-muted-foreground/70 transition hover:text-muted-foreground" />
-              </DialogTrigger>
+            {isAdmin ? (
+              <Dialog>
+                <DialogTrigger>
+                  <Icons.Plus className="text-muted-foreground/70 transition hover:text-muted-foreground" />
+                </DialogTrigger>
 
-              <CreateTaskModal status={status} projectId={projectId} />
-            </Dialog>
+                <CreateTaskModal status={status} projectId={projectId} />
+              </Dialog>
+            ) : null}
           </div>
 
           <div>

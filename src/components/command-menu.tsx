@@ -2,9 +2,16 @@
 
 import { useCallback, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+
+import type { Project } from '@/lib/db/queries/project';
+import { createInviteUrl } from '@/lib/utils';
 
 import { useKey } from '@/hooks/use-key';
 import { useClipboard } from '@/hooks/use-clipboard';
+import { useAppRouter } from '@/hooks/use-app-router';
+import { projectQueryKey } from '@/hooks/use-project-query';
+import { useUser } from '@/hooks/use-user';
 
 import {
   CommandDialog,
@@ -17,12 +24,6 @@ import {
 import { Icons } from '@/components/icons';
 import { Dialog } from '@/components/ui/dialog';
 import { CreateTaskModal } from '@/components/modal/create-task-modal';
-import { projectQueryKey } from '@/hooks/use-project-query';
-import { useAppRouter } from '@/hooks/use-app-router';
-import { useUser } from '@/hooks/use-user';
-import { createInviteUrl } from '@/lib/utils';
-import { Project } from '@/lib/db/queries/project';
-import { toast } from 'sonner';
 
 type Command = () => unknown;
 
@@ -104,7 +105,6 @@ export const CommandMenu = () => {
 
                   const inviteUrl = createInviteUrl(projectInfo.project.inviteCode);
 
-                  console.log(inviteUrl);
                   copy(inviteUrl)
                     .then(() => toast.success('Copied invite URL!'))
                     .catch(err => {

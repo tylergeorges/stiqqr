@@ -7,6 +7,7 @@ import type { LayoutProps } from '@/types';
 import { useUserQuery } from '@/hooks/use-user-query';
 import { useProjectsQuery } from '@/hooks/use-projects-query';
 import { useProjectMembersQuery } from '@/hooks/use-project-members-query';
+import { useMemberQuery } from '@/hooks/use-member-query';
 import { useProjectQuery } from '@/hooks/use-project-query';
 
 import { Sidebar } from '@/components/sidebar';
@@ -39,6 +40,7 @@ export default async function DashboardLayout({
   }
 
   await Promise.all([
+    queryClient.prefetchQuery(useMemberQuery(user.id)),
     queryClient.prefetchQuery(useProjectsQuery(user.id)),
     queryClient.prefetchQuery(useProjectMembersQuery(projectId)),
     queryClient.prefetchQuery(useProjectQuery(projectId, user.id))

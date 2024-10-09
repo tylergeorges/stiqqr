@@ -5,6 +5,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { cn } from '@/lib/utils';
 import { useProjectMembersQuery } from '@/hooks/use-project-members-query';
+import { useUpdateTaskMutation } from '@/hooks/use-update-task-mutation';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
@@ -18,12 +19,21 @@ import {
 } from '@/components/ui/command';
 import { Icons } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useAppRouter } from '@/hooks/use-app-router';
 
 interface AssigneeSwitcherProps extends React.ComponentProps<typeof PopoverContent> {
   projectId: string;
+  issueId?: string;
 }
 
-export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwitcherProps) => {
+export const AssigneeSwitcher = ({
+  projectId,
+  issueId,
+  className,
+  ...props
+}: AssigneeSwitcherProps) => {
+  const { issueId: routerissueId } = useAppRouter();
+
   const { data: assignees } = useSuspenseQuery(useProjectMembersQuery(projectId));
 
   const [currentAssignee, setAssignee] = useState<string>();
@@ -32,10 +42,11 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
     ? assignees.find(a => a.member.id === currentAssignee)?.member?.username
     : '';
 
+  const updateTaskMutation = useUpdateTaskMutation(projectId, issueId ?? routerissueId ?? '');
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        {/* <FormControl> */}
         <Button variant="ghost" role="combobox" className="relative w-full justify-start pl-1.5">
           {currentAssigneeLabel ? (
             <>
@@ -51,7 +62,6 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
             <span className="text-foreground/50">Assignee</span>
           )}
         </Button>
-        {/* </FormControl> */}
       </PopoverTrigger>
 
       <PopoverContent
@@ -71,6 +81,15 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
                   className="justify-between horizontal"
                   key={assignee.member.id}
                   onSelect={() => {
+                    if (currentAssignee === assignee.member.id || (!issueId && !routerissueId))
+                      return;
+
+                    updateTaskMutation.mutate({
+                      projectId,
+                      taskId: issueId ?? routerissueId ?? '',
+                      assigneeId: assignee.member.id
+                    });
+
                     setAssignee(assignee.member.id);
                   }}
                 >
