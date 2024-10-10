@@ -38,8 +38,11 @@ export const TaskListItem = ({ task, provided, snapshot }: TaskListItemProps) =>
         </Link>
       </TableCell>
 
-      <TableCell className="space-x-2 text-foreground/40 horizontal">
-        <Link href={`/${task.projectId}/issue/${task.id}`} className="contents">
+      <TableCell className="text-foreground/40">
+        <Link
+          href={`/${task.projectId}/issue/${task.id}`}
+          className="contents space-x-2 horizontal"
+        >
           {task.labels.map(label => (
             <div key={label.name} className="px-2 text-xs horizontal center-v">
               <div
@@ -91,6 +94,7 @@ export const renderTaskListItem = (tasks: Task[]) =>
         provided={provided}
         snapshot={snapshot}
         task={tasks[rubric.source.index]}
+        
       />
     );
   };

@@ -1,7 +1,8 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 
+import { useTaskForm } from '@/components/task-form';
 import { cn } from '@/lib/utils';
 import { Status } from '@/lib/db/schema/projects';
 
@@ -18,7 +19,6 @@ import {
 import { Icons } from '@/components/icons';
 import { TaskStatusIndicator } from '@/components/task-status-indicator';
 import { FormControl, FormField, FormItem } from '@/components/ui/form';
-import { useState } from 'react';
 
 interface StatusData {
   label: string;
@@ -37,37 +37,25 @@ export interface CreateTaskFormValues {
   status: Status;
 }
 
-export const useTaskStatusForm = (defaultStatus?: Status) => {
-  return useForm<CreateTaskFormValues>({
-    defaultValues: {
-      status: defaultStatus ?? Status.Todo
-    }
-  });
-};
-
 interface StatusSwitcherProps extends React.ComponentProps<typeof PopoverContent> {
   status: Status;
-  form: ReturnType<typeof useTaskStatusForm>;
 }
 
-export const StatusSwitcher = ({ className, form, status, ...props }: StatusSwitcherProps) => {
+export const StatusSwitcher = ({ className, status, ...props }: StatusSwitcherProps) => {
   const [showStatusMenu, setShowStatusMenu] = useState(false);
+  const form = useTaskForm();
 
   return (
     <FormField
-      name="status"
       defaultValue={status}
       control={form.control}
+      name="status"
       render={({ field }) => (
         <FormItem>
           <Popover open={showStatusMenu} onOpenChange={setShowStatusMenu}>
             <PopoverTrigger asChild>
               <FormControl>
-                <Button
-                  variant="ghost"
-                  role="combobox"
-                  className="relative w-full justify-start pl-1.5"
-                >
+                <Button variant="ghost" role="combobox" className="relative gap-1" size="sm">
                   <TaskStatusIndicator status={field.value} className="size-3" />
 
                   {taskStatuses.find(t => t.value === field.value)?.label}

@@ -2,6 +2,7 @@
 
 import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import { tasksQueryKey, useTasksQuery } from '@/hooks/use-tasks-query';
 import { entries } from '@/lib/utils';
@@ -13,7 +14,29 @@ import { TaskListGroup } from '@/components/task-list-group';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { CreateTaskModal } from '@/components/modal/create-task-modal';
-import { Table, TableHeader } from '@/components/ui/table';
+import { Table } from '@/components/ui/table';
+import { Icons } from '@/components/icons';
+
+interface ControlledTaskModalProps {
+  projectId: string;
+}
+
+const ControlledTaskModal = ({ projectId }: ControlledTaskModalProps) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" className="pl-2">
+          <Icons.Plus className="mr-2 size-5" />
+          Create issue
+        </Button>
+      </DialogTrigger>
+
+      <CreateTaskModal projectId={projectId} setOpen={setOpen} />
+    </Dialog>
+  );
+};
 
 interface TaskListProps {
   projectId: string;
@@ -68,8 +91,8 @@ export const TaskList = ({ projectId }: TaskListProps) => {
 
   return (
     <div className="size-full flex-1">
-      <Table>
-        <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Table>
           {tasks.map(([status, group]) => {
             return (
               <TaskListGroup
@@ -81,18 +104,12 @@ export const TaskList = ({ projectId }: TaskListProps) => {
               />
             );
           })}
-        </DragDropContext>
-      </Table>
+        </Table>
+      </DragDropContext>
 
       {!tasks.length && isAdmin ? (
         <div className="size-full flex-1 horizontal center">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>Create new issue</Button>
-            </DialogTrigger>
-
-            <CreateTaskModal projectId={projectId} />
-          </Dialog>
+          <ControlledTaskModal projectId={projectId} />
         </div>
       ) : null}
     </div>

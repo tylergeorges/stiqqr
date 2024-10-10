@@ -32,9 +32,9 @@ const buttonVariants = tv({
     },
 
     size: {
-      xs: 'w-[52px] min-w-[52px] gap-1 p-1 text-xs',
-      sm: 'h-8 gap-1 px-3 py-2 text-xs',
-      md: 'h-12 gap-2 px-4 py-0.5 py-2 text-sm',
+      xs: 'w-[52px] min-w-[52px]  p-1 text-xs',
+      sm: 'h-8  rounded-md px-4 py-2 text-sm',
+      md: 'h-12  px-4 py-0.5 py-2 text-sm',
       // md: 'gap-2 rounded-[4px] py-0.5 pl-1.5 pr-0.5 text-sm',
       lg: 'gap-3 px-7 py-3.5 text-base',
       xl: 'gap-2 px-6 text-base',

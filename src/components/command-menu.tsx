@@ -128,7 +128,7 @@ export const CommandMenu = () => {
       </CommandDialog>
 
       <Dialog open={createIssueOpen} onOpenChange={setCreateIssueOpen}>
-        <CreateTaskModal />
+        <CreateTaskModal setOpen={setCreateIssueOpen} />
       </Dialog>
     </>
   );

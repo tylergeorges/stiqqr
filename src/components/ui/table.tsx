@@ -5,7 +5,7 @@ import { forwardRef } from 'react';
 
 const Table = forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="relative w-full overflow-auto">
+    <div className="relative w-full overflow-auto rounded-lg border border-muted-foreground/20">
       <table ref={ref} className={cn('w-full caption-bottom text-sm', className)} {...props} />
     </div>
   )
@@ -19,7 +19,7 @@ const TableHeader = forwardRef<
   <thead
     ref={ref}
     className={cn(
-      'w-full justify-between bg-muted-foreground/10 px-4 py-2 font-medium horizontal center-v [&_tr]:border-b',
+      'w-full justify-between bg-muted-foreground/10 font-medium horizontal center-v [&_tr]:border-b',
       className
     )}
     {...props}
@@ -56,7 +56,7 @@ const TableRow = forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableR
     <tr
       ref={ref}
       className={cn(
-        'border-b border-b-muted-foreground/20 px-4 py-2 transition-colors horizontal center-v space-between hover:bg-muted/50 data-[state=selected]:bg-muted',
+        'border-b border-b-muted-foreground/20 px-4 horizontal center-v space-between data-[state=selected]:bg-muted',
         className
       )}
       {...props}
@@ -70,7 +70,7 @@ const TableHead = forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<HTMLTa
     <th
       ref={ref}
       className={cn(
-        'gap-2 text-left align-middle font-medium horizontal center-v [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+        'h-9 gap-2 p-2 text-left align-middle font-medium horizontal center-v [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
         className
       )}
       {...props}
@@ -84,7 +84,7 @@ const TableCell = forwardRef<HTMLTableCellElement, React.TdHTMLAttributes<HTMLTa
     <td
       ref={ref}
       className={cn(
-        'p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+        'h-10 p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
         className
       )}
       {...props}
