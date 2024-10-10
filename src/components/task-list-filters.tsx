@@ -2,13 +2,12 @@
 
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-
-interface TaskListFilterProps {}
-
-const TaskListFilter = ({}: TaskListFilterProps) => {};
-
-interface TaskListFiltersProps {}
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 
 export const TaskListFilters = () => {
   return (
@@ -22,10 +21,10 @@ export const TaskListFilters = () => {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-            <DropdownMenuItem>
-                <Icons.Assignee />
-                Assignee
-            </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Icons.Assignee />
+            Assignee
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

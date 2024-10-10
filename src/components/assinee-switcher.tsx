@@ -1,11 +1,10 @@
 'use client';
 
-// import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 import { useProjectMembersQuery } from '@/hooks/use-project-members-query';
-// import { useUpdateTaskMutation } from '@/hooks/use-update-task-mutation';
 import { useTaskForm } from '@/components/task-form';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -21,19 +20,13 @@ import {
 import { Icons } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FormField } from '@/components/ui/form';
-import { useState } from 'react';
 
 interface AssigneeSwitcherProps extends React.ComponentProps<typeof PopoverContent> {
   projectId: string;
   issueId?: string;
 }
 
-export const AssigneeSwitcher = ({
-  projectId,
-  issueId,
-  className,
-  ...props
-}: AssigneeSwitcherProps) => {
+export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwitcherProps) => {
   const [open, setOpen] = useState(false);
 
   const form = useTaskForm();
@@ -91,7 +84,7 @@ export const AssigneeSwitcher = ({
                       onSelect={() => {
                         if (field?.value && field?.value.id === assignee.member.id) {
                           setOpen(false);
-                          form.setValue('assignee', undefined);
+                          form.setValue('assignee', null);
 
                           return;
                         }

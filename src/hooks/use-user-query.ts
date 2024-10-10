@@ -1,4 +1,3 @@
-import type { User } from '@/lib/db/schema/users';
 import { getUser } from '@/lib/supabase/get-user';
 
 export const userQueryKey = ['user'];

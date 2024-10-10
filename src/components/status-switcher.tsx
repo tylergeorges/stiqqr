@@ -37,19 +37,16 @@ export interface CreateTaskFormValues {
   status: Status;
 }
 
-interface StatusSwitcherProps extends React.ComponentProps<typeof PopoverContent> {
-  status: Status;
-}
+interface StatusSwitcherProps extends React.ComponentProps<typeof PopoverContent> {}
 
-export const StatusSwitcher = ({ className, status, ...props }: StatusSwitcherProps) => {
+export const StatusSwitcher = ({ className, ...props }: StatusSwitcherProps) => {
   const [showStatusMenu, setShowStatusMenu] = useState(false);
   const form = useTaskForm();
 
   return (
     <FormField
-      defaultValue={status}
       control={form.control}
-      name="status"
+      {...form.register('status')}
       render={({ field }) => (
         <FormItem>
           <Popover open={showStatusMenu} onOpenChange={setShowStatusMenu}>
@@ -78,8 +75,10 @@ export const StatusSwitcher = ({ className, status, ...props }: StatusSwitcherPr
                       <CommandItem
                         className="justify-between horizontal"
                         key={task.value}
+                        value={task.value}
                         onSelect={() => {
                           form.setValue('status', task.value);
+
                           setShowStatusMenu(false);
                         }}
                       >

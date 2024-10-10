@@ -222,7 +222,7 @@ export type Task = Prettify<NonNullable<QueryReturnType<typeof getTaskInfo>>>;
 export type UpdateTask = {
   title?: string;
   description?: string;
-  assigneeId?: string;
+  assigneeId?: string | null;
   status?: Status;
   taskId: string;
   projectId: string;

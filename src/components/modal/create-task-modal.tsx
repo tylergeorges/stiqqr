@@ -97,7 +97,7 @@ export const CreateTaskModal = ({
               </div>
 
               <div className="horizontal center-v">
-                <StatusSwitcher status={status} side="bottom" align="center" />
+                <StatusSwitcher side="bottom" align="center" />
 
                 <AssigneeSwitcher
                   side="bottom"

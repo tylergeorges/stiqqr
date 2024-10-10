@@ -30,8 +30,8 @@ export const TaskListItem = ({ task, provided, snapshot }: TaskListItemProps) =>
       {...provided.dragHandleProps}
       ref={provided.innerRef}
     >
-      <TableCell className="horizontal center-v">
-        <Link href={`/${task.projectId}/issue/${task.id}`} className="contents">
+      <TableCell className="flex-1">
+        <Link href={`/${task.projectId}/issue/${task.id}`} className="flex-1 horizontal center-v">
           <TaskStatusIndicator status={task.status} />
 
           <div className="ml-2">{task.title}</div>
@@ -41,7 +41,7 @@ export const TaskListItem = ({ task, provided, snapshot }: TaskListItemProps) =>
       <TableCell className="text-foreground/40">
         <Link
           href={`/${task.projectId}/issue/${task.id}`}
-          className="contents space-x-2 horizontal"
+          className="contents w-full space-x-2 horizontal"
         >
           {task.labels.map(label => (
             <div key={label.name} className="px-2 text-xs horizontal center-v">
@@ -94,7 +94,6 @@ export const renderTaskListItem = (tasks: Task[]) =>
         provided={provided}
         snapshot={snapshot}
         task={tasks[rubric.source.index]}
-        
       />
     );
   };
