@@ -191,7 +191,7 @@ export const ButtonLink = forwardRef<HTMLAnchorElement, React.PropsWithChildren<
           active,
           color,
           size,
-          className: ` ${className}`
+          className
         })}
         ref={ref}
       >
