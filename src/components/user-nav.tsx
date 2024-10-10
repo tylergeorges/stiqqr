@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { useUser } from '@/hooks/use-user';
+import { useLogout } from '@/hooks/use-logout';
 
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -22,6 +23,8 @@ export const UserNav = () => {
 
   const { data: user, isLoading } = useUser();
 
+  const logout = useLogout();
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
@@ -35,7 +38,7 @@ export const UserNav = () => {
           <div className="leading-none horizontal center-v">
             <Avatar className="mr-2 rounded-full" size="md">
               {isLoading || !user?.avatarUrl ? (
-                <AvatarFallback className="bg-sky-400" />
+                <AvatarFallback className="bg-primary" />
               ) : (
                 <AvatarImage src={user?.avatarUrl} alt={`${user.username}'s Avatar.`} />
               )}
@@ -50,9 +53,13 @@ export const UserNav = () => {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <div className="horizontal center-v">
-              <Avatar className="mr-2 size-4 rounded-full">
-                <AvatarFallback className="bg-sky-400" />
+            <div className="cursor-default select-none horizontal center-v">
+              <Avatar className="mr-2 rounded-full" size="md">
+                {isLoading || !user?.avatarUrl ? (
+                  <AvatarFallback className="bg-primary" />
+                ) : (
+                  <AvatarImage src={user?.avatarUrl} alt={`${user.username}'s Avatar.`} />
+                )}
               </Avatar>
 
               <p className="font-medium leading-none">kneadle</p>
@@ -62,10 +69,28 @@ export const UserNav = () => {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuGroup>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+        <DropdownMenuGroup className="">
+          <DropdownMenuItem className="p-0">
+            <Button size="sm" color="secondary" className="justify-start" fill variant="ghost">
+              Settings
+            </Button>
+          </DropdownMenuItem>
 
-          <DropdownMenuItem>Log out</DropdownMenuItem>
+          <DropdownMenuItem className="p-0">
+            <Button
+              color="destructive"
+              variant="ghost"
+              fill
+              className="justify-start"
+              size="sm"
+              onClick={e => {
+                setOpen(false);
+                logout(e);
+              }}
+            >
+              Log out
+            </Button>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

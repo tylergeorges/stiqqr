@@ -32,9 +32,9 @@ const buttonVariants = tv({
     },
 
     size: {
-      xs: 'w-[52px] min-w-[52px]  p-1 text-xs',
-      sm: 'h-8  rounded-md px-4 py-2 text-sm',
-      md: 'h-12  px-4 py-0.5 py-2 text-sm',
+      xs: 'w-[52px] min-w-[52px] p-1 text-xs',
+      sm: 'h-8 rounded-md px-4 py-2 text-sm',
+      md: 'h-12 px-4 py-0.5 py-2 text-sm',
       // md: 'gap-2 rounded-[4px] py-0.5 pl-1.5 pr-0.5 text-sm',
       lg: 'gap-3 px-7 py-3.5 text-base',
       xl: 'gap-2 px-6 text-base',
@@ -81,8 +81,7 @@ const buttonVariants = tv({
     {
       color: 'destructive',
       variant: 'ghost',
-      className:
-        'bg-transparent text-destructive hover:bg-destructive hover:text-white active:bg-destructive/90 active:text-white'
+      className: 'bg-transparent text-destructive hover:bg-destructive/10 active:bg-destructive/20'
     },
     {
       color: 'default',
