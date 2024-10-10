@@ -11,6 +11,7 @@ import { Icons } from '@/components/icons';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { CreateTaskModal } from '@/components/modal/create-task-modal';
 import { Status } from '@/lib/db/schema';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface TaskListGroupProps {
   // taskGroup: TaskGroup;
@@ -26,7 +27,7 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
   return (
     <Droppable droppableId={status} renderClone={renderItem}>
       {(droppableProvided, snapshot) => (
-        <div
+        <TableBody
           ref={droppableProvided.innerRef}
           {...droppableProvided.droppableProps}
           className={cn(
@@ -34,38 +35,40 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
             snapshot.isDraggingOver && 'ring-opacity-100'
           )}
         >
-          <div className="w-full justify-between bg-muted-foreground/10 px-4 py-2 font-medium horizontal center-v">
-            <div className="gap-2 horizontal center-v">
-              <TaskStatusIndicator status={status} />
+          <TableHeader>
+            <TableRow>
+              <TableHead>
+                <TaskStatusIndicator status={status} />
 
-              {status === Status.Backlog && 'Backlog'}
-              {status === Status.Canceled && 'Canceled'}
-              {status === Status.Done && 'Done'}
-              {status === Status.InProgress && 'In Progress'}
-              {status === Status.Todo && 'Todo'}
-            </div>
+                {status === Status.Backlog && 'Backlog'}
+                {status === Status.Canceled && 'Canceled'}
+                {status === Status.Done && 'Done'}
+                {status === Status.InProgress && 'In Progress'}
+                {status === Status.Todo && 'Todo'}
+              </TableHead>
 
-            {isAdmin ? (
-              <Dialog>
-                <DialogTrigger>
-                  <Icons.Plus className="text-muted-foreground/70 transition hover:text-muted-foreground" />
-                </DialogTrigger>
+              <TableHead>
+                {isAdmin ? (
+                  <Dialog>
+                    <DialogTrigger>
+                      <Icons.Plus className="text-muted-foreground/70 transition hover:text-muted-foreground" />
+                    </DialogTrigger>
 
-                <CreateTaskModal status={status} projectId={projectId} />
-              </Dialog>
-            ) : null}
-          </div>
+                    <CreateTaskModal status={status} projectId={projectId} />
+                  </Dialog>
+                ) : null}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
 
-          <div>
-            {tasks.map((task, idx) => (
-              <Draggable key={task.title} draggableId={task.title} index={idx}>
-                {renderItem}
-              </Draggable>
-            ))}
-          </div>
+          {tasks.map((task, idx) => (
+            <Draggable key={task.title} draggableId={task.title} index={idx}>
+              {renderItem}
+            </Draggable>
+          ))}
 
           {droppableProvided.placeholder}
-        </div>
+        </TableBody>
       )}
     </Droppable>
   );

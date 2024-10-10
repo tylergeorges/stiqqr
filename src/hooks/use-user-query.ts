@@ -4,12 +4,8 @@ import { getUser } from '@/lib/supabase/get-user';
 export const userQueryKey = ['user'];
 
 export const useUserQuery = () => {
-  const queryFn = async (): Promise<User> => {
+  const queryFn = async () => {
     const user = await getUser();
-
-    if (!user) {
-      throw new Error('User not found.');
-    }
 
     return user;
   };

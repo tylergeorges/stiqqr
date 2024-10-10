@@ -76,7 +76,7 @@ const FormItem = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>
         <div
           ref={ref}
           className={cn(
-            'prose relative my-0 min-w-0 max-w-full justify-between space-y-0 text-left vertical',
+            'relative my-0 min-w-0 max-w-full justify-between space-y-0 text-left vertical',
             className
           )}
           {...props}
@@ -144,18 +144,18 @@ const FormMessage = forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLPa
     const { error, formMessageId } = useFormField();
     const body = error ? String(error?.message) : children;
 
-    if (!body) {
-      return null;
-    }
-
     return (
       <p
         ref={ref}
         id={formMessageId}
-        className={cn('text-destructive text-[0.8rem] font-medium', className)}
+        className={cn(
+          'text-[0.8rem] font-medium text-destructive',
+          !body && 'opacity-0',
+          className
+        )}
         {...props}
       >
-        {body}
+        {body}&nbsp;
       </p>
     );
   }

@@ -14,7 +14,8 @@
     --popover: 38 38 38;
     --popover-foreground: var(--foreground);
 
-    --primary: 234 88 12;
+    --primary: 35 131 226;
+    /* --primary: 234 88 12; */
     --primary-foreground: var(--foreground);
 
     /* --secondary: 32 32 32; */

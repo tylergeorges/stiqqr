@@ -13,6 +13,7 @@ import { TaskListGroup } from '@/components/task-list-group';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { CreateTaskModal } from '@/components/modal/create-task-modal';
+import { Table, TableHeader } from '@/components/ui/table';
 
 interface TaskListProps {
   projectId: string;
@@ -67,8 +68,8 @@ export const TaskList = ({ projectId }: TaskListProps) => {
 
   return (
     <div className="size-full flex-1">
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className="rounded-t-xl border border-muted-foreground/20">
+      <Table>
+        <DragDropContext onDragEnd={onDragEnd}>
           {tasks.map(([status, group]) => {
             return (
               <TaskListGroup
@@ -80,8 +81,8 @@ export const TaskList = ({ projectId }: TaskListProps) => {
               />
             );
           })}
-        </div>
-      </DragDropContext>
+        </DragDropContext>
+      </Table>
 
       {!tasks.length && isAdmin ? (
         <div className="size-full flex-1 horizontal center">

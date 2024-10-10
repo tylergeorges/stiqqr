@@ -3,17 +3,19 @@ import Link from 'next/link';
 import { type VariantProps, tv } from 'tailwind-variants';
 
 import { cn } from '@/lib/utils';
+import { Icons } from '@/components/icons';
 
 const buttonVariants = tv({
   base: cn(
-    'relative inline-flex w-fit cursor-pointer items-center whitespace-nowrap rounded-lg text-center text-sm text-white transition duration-300 ease-out',
-    'outline-none ring-primary ',
-    'items-center justify-center overflow-hidden align-middle font-medium disabled:cursor-not-allowed disabled:opacity-50'
+    'relative w-fit cursor-pointer whitespace-nowrap rounded-xl text-center text-sm text-white transition duration-300 ease-out',
+
+    'inline-flex items-center justify-center overflow-hidden align-middle font-medium outline-none ring-primary focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50',
+    ''
   ),
 
   variants: {
     color: {
-      default: 'bg-primary text-primary-foreground ring-white hover:bg-primary/90',
+      default: 'bg-primary text-primary-foreground ring-primary-foreground hover:bg-primary/90',
       white: 'bg-white text-black',
       secondary: 'bg-muted-foreground/10 text-secondary-foreground hover:bg-muted-foreground/20',
       destructive: 'bg-destructive text-white hover:bg-destructive/60 active:bg-destructive/40',
@@ -31,8 +33,8 @@ const buttonVariants = tv({
 
     size: {
       xs: 'w-[52px] min-w-[52px] gap-1 p-1 text-xs',
-      sm: 'gap-1 px-3 py-2 text-xs',
-      md: 'h-9 gap-2 rounded-md px-4 py-0.5 py-2 text-sm',
+      sm: 'h-8 gap-1 px-3 py-2 text-xs',
+      md: 'h-12 gap-2 px-4 py-0.5 py-2 text-sm',
       // md: 'gap-2 rounded-[4px] py-0.5 pl-1.5 pr-0.5 text-sm',
       lg: 'gap-3 px-7 py-3.5 text-base',
       xl: 'gap-2 px-6 text-base',
@@ -91,7 +93,7 @@ const buttonVariants = tv({
       color: 'default',
       active: true,
       variant: 'ghost',
-      className: 'bg-foreground/10 text-foreground hover:bg-foreground/10 ring-0'
+      className: 'bg-foreground/10 text-foreground ring-0 hover:bg-foreground/10'
     },
     {
       color: 'default',
@@ -117,20 +119,6 @@ export interface ButtonProps
     ButtonVariants {
   loading?: boolean;
 }
-
-const ButtonLoadingDot = () => (
-  <div className="relative size-1.5 rounded-full bg-white opacity-30" />
-);
-
-const LoadingEllipsis = () => {
-  return (
-    <div className="absolute flex h-full w-full gap-1 center child:animate-ellipsis [&>*:nth-child(2)]:delay-200 [&>*:nth-child(3)]:delay-100">
-      <ButtonLoadingDot />
-      <ButtonLoadingDot />
-      <ButtonLoadingDot />
-    </div>
-  );
-};
 
 interface ButtonStatusLabelProps {
   loading: boolean;
@@ -180,7 +168,7 @@ export const Button = forwardRef<HTMLButtonElement, React.PropsWithChildren<Butt
     >
       {children}
 
-      {loading && <LoadingEllipsis />}
+      {loading && <Icons.Spinner className="size-3 animate-spin" />}
     </button>
   )
 );

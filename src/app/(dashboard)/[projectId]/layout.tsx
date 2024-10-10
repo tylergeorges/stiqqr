@@ -39,9 +39,20 @@ export default async function DashboardLayout({
     redirect('/');
   }
 
+  const projects = await queryClient.fetchQuery(useProjectsQuery(user.id));
+
+  if (!projects.length) {
+    redirect('/onboarding');
+  }
+
+  const isValidProject = projects.find(p => p.project.id === projectId);
+
+  if (!isValidProject) {
+    redirect(`/${projects[0].project.id}/issues`);
+  }
+
   await Promise.all([
     queryClient.prefetchQuery(useMemberQuery(user.id)),
-    queryClient.prefetchQuery(useProjectsQuery(user.id)),
     queryClient.prefetchQuery(useProjectMembersQuery(projectId)),
     queryClient.prefetchQuery(useProjectQuery(projectId, user.id))
   ]);

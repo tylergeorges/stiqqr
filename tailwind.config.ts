@@ -3,8 +3,8 @@ import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
 import TailwindAnimate from 'tailwindcss-animate';
+import TailwindMotion from 'tailwindcss-motion';
 import TailwindTypography from '@tailwindcss/typography';
-import TailwindAnimated from 'tailwindcss-animated';
 import {
   TailwindChildren,
   TailwindFlexible,
@@ -138,7 +138,7 @@ const config: Config = {
   plugins: [
     TailwindGradientText,
     TailwindFlexible,
-    TailwindAnimated,
+    TailwindMotion,
     TailwindTypography,
     TailwindChildren,
     TailwindAnimate
