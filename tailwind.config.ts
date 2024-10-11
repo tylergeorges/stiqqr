@@ -4,7 +4,6 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 
 import TailwindAnimate from 'tailwindcss-animate';
 import TailwindTypography from '@tailwindcss/typography';
-import TailwindMotion from 'tailwindcss-motion';
 import {
   TailwindChildren,
   TailwindFlexible,
@@ -138,7 +137,7 @@ const config: Config = {
   plugins: [
     TailwindGradientText,
     TailwindFlexible,
-    TailwindMotion,
+    require('tailwindcss-motion'),
     TailwindTypography,
     TailwindChildren,
     TailwindAnimate
