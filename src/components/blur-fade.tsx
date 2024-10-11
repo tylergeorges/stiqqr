@@ -29,7 +29,7 @@ export const BlurFade = ({
   yOffset = 6,
   inView = false,
   inViewMargin = '-50px',
-  blur = '6px'
+  blur = '4px'
 }: BlurFadeProps) => {
   const ref = useRef(null);
   const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
@@ -38,6 +38,7 @@ export const BlurFade = ({
     hidden: { y: yOffset, opacity: 0, filter: `blur(${blur})` },
     visible: { y: -yOffset, opacity: 1, filter: `blur(0px)` }
   };
+
   const combinedVariants = variant || defaultVariants;
   return (
     <AnimatePresence>

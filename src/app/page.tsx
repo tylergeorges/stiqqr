@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { QueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
 
 import { useProjectsQuery } from '@/hooks/use-projects-query';
 import type { User } from '@/lib/db/schema';
@@ -8,6 +9,8 @@ import { getUser } from '@/lib/supabase/get-user';
 import { Icons } from '@/components/icons';
 import { LoginButton } from '@/components/login-button';
 import { ButtonLink } from '@/components/ui/button';
+import { BlurFade } from '@/components/blur-fade';
+import { Particles } from '@/components/particles';
 
 interface RedirectToProjectsProps {
   user: User;
@@ -27,78 +30,76 @@ export default async function Home() {
   if (user) return <RedirectToProjects user={user} />;
 
   return (
-    <section className="flex-1 bg-black  center vertical">
+    <section className="relative size-full flex-1 overflow-hidden bg-black center-h vertical">
+      <div className="absolute z-0 size-full">
+        <BlurFade duration={0.7} className="absolute z-0 size-full flex-1" yOffset={0} delay={0.25}>
+          <Particles className="inset-0 z-0 size-full flex-1" quantity={100} />
+        </BlurFade>
+      </div>
 
-      <div className='absolute top-0 '/>
-      <div className="mx-auto grid place-items-center gap-8 py-20 md:py-32 lg:max-w-screen-xl container">
-        <div className="text-center">
-          <h1 className="text motion-preset-fade mx-auto text-balance text-center text-5xl font-bold leading-[1.1] motion-delay-200 -motion-translate-y-in-[15%] md:mb-2 md:text-6xl md:leading-[] lg:max-w-screen-md  to-foreground   text-white">
-            Stiqqr
-          </h1>
+      <header className="sticky top-0 z-50 w-full backdrop-blur">
+        <div className="container h-14 max-w-screen-2xl select-none horizontal center">
+          <div className="mr-2 size-6 rounded-lg bg-[#F51C5D] center vertical">
+            <Icons.Stiqqr className="size-5" />
+          </div>
 
-          <p className="text-md motion-preset-fade mx-auto mb-6 max-w-lg text-lg font-medium text-muted-foreground motion-delay-300 -motion-translate-y-in-25 md:text-lg">
-            A task management app
-          </p>
+          <h1 className="inline-block font-black">stiqqr</h1>
+        </div>
+      </header>
 
-          <div className="motion-preset-fade w-full flex-wrap space-y-4 center vertical motion-delay-[400ms] -motion-translate-y-in-25 md:space-x-4 md:space-y-0 md:horizontal">
-            <LoginButton className="group/arrow w-full font-bold md:max-w-fit">
-              Get Started
-              <Icons.ChevronRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
-            </LoginButton>
+      <div className="relative z-10 size-full max-w-[80rem] flex-1 justify-around px-6 vertical md:px-8">
+        <div className="relative z-0 size-full self-center justify-self-center text-center center vertical md:mt-32">
+          <div className="text-center center vertical">
+            <div className="center vertical">
+              <BlurFade delay={0.15}>
+                <h1 className="text relative mx-0 max-w-[43.5rem] text-balance to-foreground pt-5 text-left text-5xl font-bold leading-[1.1] tracking-tighter text-white sm:text-7xl md:px-4 md:py-2 md:text-center md:text-7xl md:leading-[] lg:max-w-screen-md lg:text-8xl">
+                  stiqqr
+                </h1>
+              </BlurFade>
 
-            <ButtonLink
-              href="https://github.com/tylergeorges/stiqqr"
-              target="_blank"
-              color="secondary"
-              className="w-full flex-1 font-bold md:max-w-fit"
-            >
-              Github respository
-            </ButtonLink>
+              <BlurFade delay={0.15 * 2} className="mb-12">
+                <p className="text-md max-w-lg text-lg font-medium text-foreground/50 md:text-lg">
+                  A task management app
+                </p>
+              </BlurFade>
+
+              <BlurFade delay={0.15 * 3}>
+                <div className="w-full flex-wrap space-x-4 horizontal center-v md:space-x-4 md:space-y-0">
+                  <LoginButton className="group/arrow">
+                    Get Started
+                    <Icons.ChevronRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
+                  </LoginButton>
+
+                  <ButtonLink
+                    href="https://github.com/tylergeorges/stiqqr"
+                    target="_blank"
+                    color="secondary"
+                    className="flex-1 gap-2 center-v"
+                    variant="ghost"
+                  >
+                    <Icons.GitHub className="size-4" />
+                    GitHub
+                  </ButtonLink>
+                </div>
+              </BlurFade>
+            </div>
           </div>
         </div>
+
+        <BlurFade className="aspect- inline-flex w-full" delay={0.15 * 2}>
+          <div className="relative aspect-video size-full flex-1 overflow-hidden rounded-xl bg-black md:-mb-32">
+            <Image
+              width={2499}
+              height={1354}
+              alt='App preview'
+              src="/assets/stiqqr-preview.png"
+              className="aspect-video rounded-xl"
+            />
+
+            <div className="absolute inset-0 z-10 aspect-video bg-gradient-to-b from-transparent via-black/40 to-black" />
+          </div>
+        </BlurFade>
       </div>
     </section>
   );
 }
-
-// export default async function Home() {
-//   const user = await getUser();
-
-//   if (user) return <RedirectToProjects user={user} />;
-
-//   return (
-//     <section className="container center vertical">
-//       <div className="mx-auto grid place-items-center gap-8 py-20 md:py-32 lg:max-w-screen-xl">
-//         <div className="space-y-8 text-center">
-//           <div className="text motion-preset-fade mx-auto text-balance text-center text-5xl font-bold motion-delay-200 -motion-translate-y-in-[15%] md:text-6xl lg:max-w-screen-md">
-//             <h1>
-//               Stiqq Your Tasks
-//               <span className="px-2 text-primary">Boost</span>
-//               Your Flow
-//             </h1>
-//           </div>
-
-//           <p className="motion-preset-fade mx-auto max-w-screen-sm text-lg font-medium text-muted-foreground motion-delay-300 -motion-translate-y-in-25">
-//             Meet Stiqqr, the next-gen task management tool that lets you stick to what’s important.
-//           </p>
-
-//           <div className="motion-preset-fade w-full flex-wrap space-y-4 center vertical motion-delay-[400ms] -motion-translate-y-in-25 md:space-x-4 md:space-y-0 md:horizontal">
-//             <LoginButton className="group/arrow w-full font-bold md:max-w-fit">
-//               Get Started
-//               <Icons.ChevronRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
-//             </LoginButton>
-
-//             <ButtonLink
-//               href="https://github.com/tylergeorges/stiqqr"
-//               target="_blank"
-//               color="secondary"
-//               className="w-full flex-1 font-bold md:max-w-fit"
-//             >
-//               Github respository
-//             </ButtonLink>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }

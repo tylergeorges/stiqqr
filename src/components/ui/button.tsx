@@ -17,7 +17,7 @@ const buttonVariants = tv({
     color: {
       default: 'bg-primary text-primary-foreground ring-primary-foreground hover:bg-primary/90',
       white: 'bg-white text-black',
-      secondary: 'bg-muted-foreground/10 text-secondary-foreground hover:bg-muted-foreground/20',
+      secondary: 'bg-muted-foreground/30 text-secondary-foreground hover:bg-muted-foreground/35',
       destructive: 'bg-destructive text-white hover:bg-destructive/60 active:bg-destructive/40',
       success: 'bg-success text-white hover:bg-success/90'
     },
@@ -33,8 +33,8 @@ const buttonVariants = tv({
 
     size: {
       xs: 'w-[52px] min-w-[52px] p-1 text-xs',
-      sm: 'h-8 rounded-md px-4 py-2 text-sm',
-      md: 'h-12 px-4 py-0.5 py-2 text-sm',
+      sm: 'h-8 rounded-md px-4 text-sm',
+      md: 'h-12 px-4 text-sm',
       // md: 'gap-2 rounded-[4px] py-0.5 pl-1.5 pr-0.5 text-sm',
       lg: 'gap-3 px-7 py-3.5 text-base',
       xl: 'gap-2 px-6 text-base',

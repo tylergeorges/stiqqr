@@ -1,47 +1,101 @@
+'use client';
+
 import { forwardRef } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
-import { cn } from '@/lib/utils';
-
 const badgeVariants = tv({
-  base: cn(
-    'inline-flex w-fit items-center justify-center rounded-xl px-2.5 py-1 text-xs font-medium'
-  ),
+  base: 'relative z-10 inline-flex w-fit items-center justify-center rounded-full  px-2.5 py-1 text-xs',
 
   variants: {
     variant: {
-      default: 'border border-primary bg-primary/50 text-primary-foreground',
-      secondary: 'bg-secondary text-muted-foreground',
-      white: 'bg-white text-black',
-      destructive: 'text-destructive-foreground bg-destructive',
-      outline: 'border border-secondary bg-transparent text-primary',
-      ghost: 'bg-transparent text-primary',
-      transparent: 'bg-transparent text-muted-foreground'
+      none: '',
+      outline: 'border',
+      ghost: 'bg-transparent',
+      fill: ''
     },
 
-    position: {
-      'top-right': 'absolute end-0 top-0 -me-2 -mt-1 flex size-3 p-0'
+    color: {
+      default: 'bg-primary text-primary',
+      secondary: 'border-muted-foreground/30 bg-muted-foreground/40    text-secondary-foreground40',
+      white: 'text-white',
+      orange: 'bg-orange-500 text-orange-500',
+      red: 'text-red-500'
     }
   },
 
+  compoundVariants: [
+    {
+      variant: 'fill',
+      color: 'default',
+      className: 'bg-primary text-primary-foreground'
+    },
+    {
+      variant: 'fill',
+      color: 'orange',
+      className: 'bg-orange-500 text-black'
+    },
+    {
+      variant: 'fill',
+      color: 'red',
+      className: 'bg-red-500 text-black'
+    },
+  
+    {
+      variant: 'fill',
+      color: 'white',
+      className: 'bg-white text-black'
+    },
+
+    {
+      variant: 'outline',
+      color: 'default',
+      className: 'bg-transparent'
+    },
+    {
+      variant: 'outline',
+      color: 'orange',
+      className: 'bg-transparent'
+    },
+    {
+      variant: 'outline',
+      color: 'red',
+      className: 'bg-transparent'
+    },
+    {
+      variant: 'ghost',
+      color: 'secondary',
+      className: 'bg-transparent'
+    },
+
+    {
+      variant: 'outline',
+      color: 'white',
+      className: 'bg-transparent'
+    }
+  ],
+
   defaultVariants: {
-    variant: 'default'
+    color: 'default'
   }
 });
 
 type BadgeVariants = VariantProps<typeof badgeVariants>;
 
-interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, BadgeVariants {}
+interface BadgeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>, BadgeVariants {}
 
 export const Badge = forwardRef<HTMLDivElement, React.PropsWithChildren<BadgeProps>>(
-  ({ className, children, variant, position, ...props }, ref) => {
+  ({ className, children, variant, color, ...props }, ref) => {
     return (
-      <div {...props} className={badgeVariants({ variant, position, className })} ref={ref}>
-        {children ? (
-          children
-        ) : (
-          <span className="relative h-full animate-ping rounded-full bg-inherit" />
-        )}
+      <div
+        {...props}
+        className={badgeVariants({
+          variant,
+          color,
+          className
+        })}
+        ref={ref}
+      >
+        {children}
       </div>
     );
   }

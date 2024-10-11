@@ -4,6 +4,7 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 
 import TailwindAnimate from 'tailwindcss-animate';
 import TailwindTypography from '@tailwindcss/typography';
+import TailwindMotion from 'tailwindcss-motion';
 import {
   TailwindChildren,
   TailwindFlexible,
@@ -27,10 +28,10 @@ const config: Config = {
     // },
     container: {
       center: true,
-      padding: "1.5rem",
+      padding: '1.5rem',
       screens: {
-        "2xl": "1400px",
-      },
+        '2xl': '1400px'
+      }
     },
     extend: {
       typography: () => ({
@@ -137,7 +138,7 @@ const config: Config = {
   plugins: [
     TailwindGradientText,
     TailwindFlexible,
-    require('tailwindcss-motion'),
+    TailwindMotion,
     TailwindTypography,
     TailwindChildren,
     TailwindAnimate
