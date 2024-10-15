@@ -12,11 +12,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Icons } from '@/components/icons';
 import { PageHeader } from '@/components/page-header';
+import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: {
@@ -33,19 +34,15 @@ export default async function MembersPage({ params }: PageProps<{ projectId: str
 
   return (
     <DashboardPageContainer>
-      <PageHeader className="px-4">Members</PageHeader>
+      <PageHeader className="px-4 md:px-0">Members</PageHeader>
 
-      <div className="relative w-full shrink-0 flex-wrap gap-7">
-        <div className={'w-full text-sm transition duration-300'}>
+      <Table className="">
+        <TableHeader></TableHeader>
+
+        <TableBody>
           {members.map(projectMember => (
-            <div
-              key={projectMember.member.id}
-              className={cn(
-                'grid w-full grid-cols-[10fr_3fr_2fr] items-center px-4 py-2 even:bg-muted-foreground/10',
-                'border-b border-b-muted-foreground/20'
-              )}
-            >
-              <div className="col-start-1 col-end-1 px-2 horizontal center-v">
+            <TableRow key={projectMember.member.id} className={cn('odd:bg-muted-foreground/10')}>
+              <TableCell className="size-fit w-fit max-w-fit gap-3 p-0 horizontal">
                 <Avatar size="md" className={'relative rounded-full'}>
                   {projectMember.member.avatarUrl ? (
                     <AvatarImage
@@ -57,7 +54,7 @@ export default async function MembersPage({ params }: PageProps<{ projectId: str
                   )}
                 </Avatar>
 
-                <div className="w-full vertical">
+                <div className="vertical">
                   <span className="ml-1.5 mr-[1px] leading-[normal] text-foreground">
                     {projectMember.member.username}
                   </span>
@@ -66,15 +63,15 @@ export default async function MembersPage({ params }: PageProps<{ projectId: str
                     {projectMember.member.email}
                   </span>
                 </div>
-              </div>
+              </TableCell>
 
-              <div className="col-start-2 col-end-2 w-full">
+              <TableCell className="center-v">
                 {projectMember.role === Role.Owner && 'Owner'}
                 {projectMember.role === Role.Admin && 'Admin'}
                 {projectMember.role === Role.Member && 'Member'}
-              </div>
+              </TableCell>
 
-              <div className="col-span-1 col-start-3 col-end-3 w-full justify-end horizontal center-v">
+              <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Icons.DotsVert className="size-2 text-foreground/40" />
@@ -82,15 +79,18 @@ export default async function MembersPage({ params }: PageProps<{ projectId: str
 
                   <DropdownMenuContent align="start" side="left" className="w-fit">
                     <DropdownMenuGroup>
-                      <DropdownMenuItem>Remove member</DropdownMenuItem>
+                      <Button size="sm" color="destructive" variant="ghost">
+                        Remove member
+                      </Button>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </div>
-            </div>
+              </TableCell>
+            </TableRow>
           ))}
-        </div>
-      </div>
+        </TableBody>
+        {/* </div> */}
+      </Table>
     </DashboardPageContainer>
   );
 }

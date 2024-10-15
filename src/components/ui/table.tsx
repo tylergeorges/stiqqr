@@ -56,7 +56,7 @@ const TableRow = forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableR
     <tr
       ref={ref}
       className={cn(
-        'border-b border-b-muted-foreground/20 px-4 horizontal center-v space-between data-[state=selected]:bg-muted',
+        'border-b border-b-muted-foreground/20 px-4   data-[state=selected]:bg-muted',
         className
       )}
       {...props}
