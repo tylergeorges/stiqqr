@@ -33,6 +33,7 @@ export const UserNav = () => {
           size="lg"
           fill
           variant="ghost"
+          color="secondary"
           className="pr-4 text-sm text-foreground center-v"
         >
           <div className="leading-none horizontal center-v">

@@ -1,5 +1,7 @@
-import { forwardRef } from 'react';
+'use client';
+
 import Link from 'next/link';
+import { forwardRef } from 'react';
 import { type VariantProps, tv } from 'tailwind-variants';
 
 import { cn } from '@/lib/utils';
@@ -9,7 +11,7 @@ const buttonVariants = tv({
   base: cn(
     'relative w-fit cursor-pointer whitespace-nowrap rounded-xl text-center text-sm text-white transition duration-300 ease-out',
 
-    'inline-flex items-center justify-center overflow-hidden align-middle font-medium outline-none ring-primary focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50',
+    'inline-flex items-center justify-center overflow-hidden align-middle font-semibold outline-none ring-primary focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50',
     ''
   ),
 
@@ -17,7 +19,7 @@ const buttonVariants = tv({
     color: {
       default: 'bg-primary text-primary-foreground ring-primary-foreground hover:bg-primary/90',
       white: 'bg-white text-black',
-      secondary: 'bg-muted-foreground/30 text-secondary-foreground hover:bg-muted-foreground/35',
+      secondary: 'bg-foreground/[0.05] text-secondary-foreground hover:bg-muted-foreground/35',
       destructive: 'bg-destructive text-white hover:bg-destructive/60 active:bg-destructive/40',
       success: 'bg-success text-white hover:bg-success/90'
     },
@@ -32,8 +34,8 @@ const buttonVariants = tv({
     },
 
     size: {
-      xs: 'w-[52px] min-w-[52px] p-1 text-xs',
-      sm: 'h-8 rounded-md px-4 text-sm',
+      xs: 'h-7 rounded-md px-3.5 text-xs',
+      sm: 'h-9 rounded-md px-3 text-sm',
       md: 'h-12 px-4 text-sm',
       // md: 'gap-2 rounded-[4px] py-0.5 pl-1.5 pr-0.5 text-sm',
       lg: 'gap-3 px-7 py-3.5 text-base',
@@ -84,15 +86,15 @@ const buttonVariants = tv({
       className: 'bg-transparent text-destructive hover:bg-destructive/10 active:bg-destructive/20'
     },
     {
-      color: 'default',
+      color: 'secondary',
       variant: 'ghost',
-      className: 'bg-transparent text-foreground/90 hover:bg-foreground/5'
+      className: 'bg-transparent text-muted-foreground hover:bg-foreground/[0.05]'
     },
     {
-      color: 'default',
+      color: 'secondary',
       active: true,
       variant: 'ghost',
-      className: 'bg-foreground/10 text-foreground ring-0 hover:bg-foreground/10'
+      className: 'bg-foreground/[0.05] text-foreground hover:bg-foreground/[0.05]'
     },
     {
       color: 'default',

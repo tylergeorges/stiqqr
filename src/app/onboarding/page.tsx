@@ -9,7 +9,7 @@ import { Icons } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'Stiqqr - Onboarding',
+    absolute: 'Onboarding',
     default: 'Onboarding'
   },
   description: 'Create a new project.'

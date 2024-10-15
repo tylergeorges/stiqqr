@@ -30,73 +30,77 @@ export default async function Home() {
   if (user) return <RedirectToProjects user={user} />;
 
   return (
-    <section className="relative size-full flex-1 overflow-hidden bg-black center-h vertical">
-      <div className="absolute z-0 size-full">
-        <BlurFade duration={0.7} className="absolute z-0 size-full flex-1" yOffset={0} delay={0.25}>
-          <Particles className="inset-0 z-0 size-full flex-1" quantity={100} />
+    <section className="relative size-full flex-1 overflow-hidden bg-black center-h vertical selection:bg-white selection:text-black">
+      {/* <header className="sticky top-0 z-50 w-full backdrop-blur">
+        <div className="container h-14 max-w-screen-2xl select-none horizontal center">
+          <div className="mr-2 size-8 rounded-lg bg-[#F51C5D] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.6)] center vertical">
+            <Icons.Stiqqr className="size-6" />
+          </div>
+        </div>
+      </header> */}
+
+      <div className="absolute -top-[calc(8rem_+_128px)] right-0 size-full horizontal center">
+        <BlurFade duration={0.7}  className="inset-0 mb-[8rem] size-full" delay={0.25}>
+          <Particles className="z-0 size-full flex-1" quantity={100} />
         </BlurFade>
       </div>
 
-      <header className="sticky top-0 z-50 w-full backdrop-blur">
-        <div className="container h-14 max-w-screen-2xl select-none horizontal center">
-          <div className="mr-2 size-6 rounded-lg bg-[#F51C5D] center vertical">
-            <Icons.Stiqqr className="size-5" />
-          </div>
+      <div className="relative z-10 mt-32 h-full max-w-[80rem] px-6 center vertical md:px-8">
+        <div className="z-0 self-center justify-self-center text-center center vertical">
+          <BlurFade yOffset={-6} delay={0.25} className="gap-10 center vertical" >
+            <h1 className="text relative mx-0 max-w-[43.5rem] text-balance to-foreground pt-5 text-left text-5xl font-bold leading-[1.1] tracking-tighter text-white sm:text-7xl md:px-4 md:py-2 md:text-center md:text-7xl md:leading-[] lg:max-w-screen-md lg:text-8xl">
+              stiqqr
+            </h1>
+          </BlurFade>
 
-          <h1 className="inline-block font-black">stiqqr</h1>
-        </div>
-      </header>
+          <BlurFade  yOffset={-6} delay={0.25 * 2} className="mb-12">
+            <p className="text-md max-w-lg text-lg font-medium text-foreground/50 md:text-lg">
+              A task management app
+            </p>
+          </BlurFade>
 
-      <div className="relative z-10 size-full max-w-[80rem] flex-1 justify-around px-6 vertical md:px-8">
-        <div className="relative z-0 size-full self-center justify-self-center text-center center vertical md:mt-32">
-          <div className="text-center center vertical">
-            <div className="center vertical">
-              <BlurFade delay={0.15}>
-                <h1 className="text relative mx-0 max-w-[43.5rem] text-balance to-foreground pt-5 text-left text-5xl font-bold leading-[1.1] tracking-tighter text-white sm:text-7xl md:px-4 md:py-2 md:text-center md:text-7xl md:leading-[] lg:max-w-screen-md lg:text-8xl">
-                  stiqqr
-                </h1>
-              </BlurFade>
+          <BlurFade  yOffset={-6} delay={0.25 * 3} >
+            <div className="w-full flex-wrap space-x-4 horizontal center-v md:space-x-4 md:space-y-0">
+              <LoginButton className="group/arrow" color="white">
+                Get Started
+                <Icons.ChevronRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
+              </LoginButton>
 
-              <BlurFade delay={0.15 * 2} className="mb-12">
-                <p className="text-md max-w-lg text-lg font-medium text-foreground/50 md:text-lg">
-                  A task management app
-                </p>
-              </BlurFade>
-
-              <BlurFade delay={0.15 * 3}>
-                <div className="w-full flex-wrap space-x-4 horizontal center-v md:space-x-4 md:space-y-0">
-                  <LoginButton className="group/arrow">
-                    Get Started
-                    <Icons.ChevronRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
-                  </LoginButton>
-
-                  <ButtonLink
-                    href="https://github.com/tylergeorges/stiqqr"
-                    target="_blank"
-                    color="secondary"
-                    className="flex-1 gap-2 center-v"
-                    variant="ghost"
-                  >
-                    <Icons.GitHub className="size-4" />
-                    GitHub
-                  </ButtonLink>
-                </div>
-              </BlurFade>
+              <ButtonLink
+                href="https://github.com/tylergeorges/stiqqr"
+                target="_blank"
+                color="secondary"
+                className="flex-1 gap-2 center-v"
+                variant="outline"
+              >
+                <Icons.GitHub className="size-4" />
+                GitHub
+              </ButtonLink>
             </div>
-          </div>
+          </BlurFade>
         </div>
 
-        <BlurFade className="aspect- inline-flex w-full" delay={0.15 * 2}>
-          <div className="relative aspect-video size-full flex-1 overflow-hidden rounded-xl bg-black md:-mb-32">
+        <BlurFade
+          className="pointer-events-none mt-[8rem] inline-flex w-full select-none motion-preset-slide-up-sm motion-delay-500 "
+          delay={0.25 * 2}
+        >
+          <div
+            draggable={'false'}
+            className="pointer-events-none relative aspect-video size-full flex-1 select-none overflow-hidden rounded-xl md:-mb-32 before:w-full "
+          >
             <Image
               width={2499}
               height={1354}
-              alt='App preview'
+              draggable={'false'}
+              alt="App preview"
               src="/assets/stiqqr-preview.png"
-              className="aspect-video rounded-xl"
+              className="pointer-events-none aspect-video select-none rounded-xl"
             />
 
-            <div className="absolute inset-0 z-10 aspect-video bg-gradient-to-b from-transparent via-black/40 to-black" />
+            <div
+              draggable={'false'}
+              className="pointer-events-none absolute inset-0 z-10 aspect-video select-none [background:linear-gradient(to_top,black_30%,transparent)] "
+            />
           </div>
         </BlurFade>
       </div>

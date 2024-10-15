@@ -108,7 +108,7 @@ export const CreateTaskModal = ({
             </div>
 
             <DialogFooter>
-              <Button type="submit" size="sm">
+              <Button type="submit" size="xs">
                 Create issue
               </Button>
             </DialogFooter>

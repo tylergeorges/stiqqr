@@ -40,10 +40,16 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
       render={({ field }) => (
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <Button variant="ghost" size="sm" role="combobox" className="relative gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              role="combobox"
+              className={cn('relative gap-1', field?.value ? 'text-foreground' : '')}
+              color="secondary"
+            >
               {field?.value ? (
                 <>
-                  <Avatar className="rounded-md" size="md">
+                  <Avatar className="rounded-md" size="sm">
                     {field?.value.avatarUrl ? (
                       <AvatarImage
                         src={field?.value.avatarUrl}
@@ -59,7 +65,13 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
                   {field?.value.name}
                 </>
               ) : (
-                <span className="text-foreground/50">Assignee</span>
+                <div className="contents">
+                  <Avatar className="rounded-md" size="sm">
+                    <AvatarFallback className="rounded-full border-2 border-dotted border-muted-foreground"></AvatarFallback>
+                  </Avatar>
+
+                  <span className="font-normal text-foreground/50">Assignee</span>
+                </div>
               )}
             </Button>
           </PopoverTrigger>
@@ -67,7 +79,7 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
           <PopoverContent
             side="left"
             align="start"
-            className={cn('w-[235px] border border-muted-foreground/10 px-0', className)}
+            className={cn('border border-muted-foreground/10 px-0 w-fit md:w-[235px]', className)}
             {...props}
           >
             <Command>
@@ -78,7 +90,10 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
                 <CommandGroup className="">
                   {assignees.map(assignee => (
                     <CommandItem
-                      className="justify-between horizontal"
+                      className={cn(
+                        'justify-between horizontal',
+                        assignee.member.id === field?.value?.id ? 'text-foreground' : ''
+                      )}
                       key={assignee.member.id}
                       value={assignee.member.id}
                       onSelect={() => {
@@ -114,16 +129,14 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
                         {assignee.member.username}
                       </div>
 
-                      {
-                        <div
-                          className={cn(
-                            'aspect-square size-4 rounded-full bg-emerald-400 horizontal center',
-                            assignee.member.id === field?.value?.id ? 'opacity-100' : 'opacity-0'
-                          )}
-                        >
-                          <Icons.Check className={'size-4 text-background'} />
-                        </div>
-                      }
+                      <div
+                        className={cn(
+                          'aspect-square size-4 rounded-full bg-emerald-400 horizontal center',
+                          assignee.member.id === field?.value?.id ? 'opacity-100' : 'opacity-0'
+                        )}
+                      >
+                        <Icons.Check className={'size-4 text-background'} />
+                      </div>
                     </CommandItem>
                   ))}
                 </CommandGroup>

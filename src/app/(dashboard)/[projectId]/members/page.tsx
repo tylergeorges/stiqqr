@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Icons } from '@/components/icons';
+import { PageHeader } from '@/components/page-header';
 
 export const metadata: Metadata = {
   title: {
@@ -32,7 +33,7 @@ export default async function MembersPage({ params }: PageProps<{ projectId: str
 
   return (
     <DashboardPageContainer>
-      <h1 className="text-2xl font-semibold">Members</h1>
+      <PageHeader className="px-4">Members</PageHeader>
 
       <div className="relative w-full shrink-0 flex-wrap gap-7">
         <div className={'w-full text-sm transition duration-300'}>

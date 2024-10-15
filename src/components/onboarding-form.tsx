@@ -87,7 +87,6 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
     formState: { errors, isSubmitting }
   } = form;
 
-  console.log(isSubmitting);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="size-full flex-1 center vertical">
@@ -104,7 +103,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
                   autoComplete="off"
                   placeholder="Acme, Inc."
                   className={cn(
-                    'w-full ring-foreground/[0.09] focus-visible:ring-2',
+                    'w-full focus-visible:ring-2',
                     errors?.projectName?.message ? 'ring-destructive' : ''
                   )}
                   {...field}

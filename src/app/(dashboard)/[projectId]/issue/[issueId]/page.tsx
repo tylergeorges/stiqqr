@@ -4,13 +4,15 @@ import { redirect } from 'next/navigation';
 
 import type { PageProps } from '@/types';
 
-import { projectQueryKey } from '@/hooks/use-project-query';
+import { useProjectQuery } from '@/hooks/use-project-query';
 import { getUser } from '@/lib/supabase/get-user';
-import { getTaskInfo, type Project } from '@/lib/db/queries/project';
+import { getTaskInfo } from '@/lib/db/queries/project';
 import { taskQueryKey, useTaskQuery } from '@/hooks/use-task-query';
 
 import { IssueEditorSidebar } from '@/components/issue-editor-sidebar';
 import { ExpandedEditor } from '@/components/expanded-editor';
+import { PageHeader } from '@/components/page-header';
+import { TaskToolbar } from '@/components/task-toolbar';
 
 interface Params {
   issueId: string;
@@ -40,20 +42,17 @@ export default async function ProjectIssuePage({ params }: Props) {
 
   const task = await queryClient.fetchQuery(useTaskQuery(params.projectId, params.issueId));
 
-  if (!task) return redirect(`/${params.projectId}/issues`);
+  const project = await queryClient.fetchQuery(useProjectQuery(params.projectId, user.id));
 
-  const project = queryClient.getQueryData<Project>([
-    ...projectQueryKey,
-    params.projectId,
-    user.id
-  ]);
+  if (!task || !project) return redirect(`/${params.projectId}/issues`);
 
   return (
     <div className="size-full flex-1">
       <div className="size-full flex-1 horizontal">
         <div className="flex-1 gap-8 px-9 py-6 vertical">
-          <div className="vertical">
-            <p className="font-medium">{project?.project.name}</p>
+          <div className="gap-2 vertical">
+            <PageHeader className="">{project?.project.name}</PageHeader>
+            <TaskToolbar projectId={params.projectId} task={task} />
           </div>
 
           <ExpandedEditor projectId={params.projectId} taskId={task.id} task={task} />

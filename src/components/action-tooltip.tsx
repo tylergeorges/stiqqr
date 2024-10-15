@@ -1,12 +1,15 @@
 'use client';
 
+import { forwardRef } from 'react';
+
 import {
   Tooltip,
   TooltipArrow,
   TooltipContent,
   TooltipPortal,
   TooltipProvider,
-  TooltipTrigger
+  TooltipTrigger,
+  type TooltipElement
 } from '@/components/ui/tooltip';
 
 interface ActionTooltipProps {
@@ -16,25 +19,24 @@ interface ActionTooltipProps {
   align?: 'start' | 'center' | 'end';
 }
 
-export const ActionTooltip = ({
-  children,
-  label,
-  side = 'top',
-  align = 'center'
-}: ActionTooltipProps) => {
-  return (
-    <TooltipProvider disableHoverableContent>
-      <Tooltip delayDuration={50}>
-        <TooltipTrigger asChild>{children}</TooltipTrigger>
+export const ActionTooltip = forwardRef<TooltipElement, ActionTooltipProps>(
+  ({ children, label, side = 'top', align = 'center' }, ref) => {
+    return (
+      <TooltipProvider disableHoverableContent>
+        <Tooltip delayDuration={50}>
+          <TooltipTrigger asChild>{children}</TooltipTrigger>
 
-        <TooltipPortal>
-          <TooltipContent side={side} align={align}>
-            <p className="text-sm font-semibold capitalize">{label}</p>
+          <TooltipPortal>
+            <TooltipContent side={side} align={align} ref={ref}>
+              <p className="text-sm font-semibold capitalize">{label}</p>
 
-            <TooltipArrow className="fill-popover" />
-          </TooltipContent>
-        </TooltipPortal>
-      </Tooltip>
-    </TooltipProvider>
-  );
-};
+              <TooltipArrow className="fill-popover" />
+            </TooltipContent>
+          </TooltipPortal>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+);
+
+ActionTooltip.displayName = 'ActionTooltip';

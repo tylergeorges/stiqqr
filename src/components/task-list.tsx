@@ -26,7 +26,7 @@ const ControlledTaskModal = ({ projectId }: ControlledTaskModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger >
         <Button size="sm" className="pl-2">
           <Icons.Plus className="mr-2 size-5" />
           Create issue

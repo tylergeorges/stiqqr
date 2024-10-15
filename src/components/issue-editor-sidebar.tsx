@@ -5,12 +5,12 @@ import { useEffect } from 'react';
 
 import type { Task } from '@/lib/db/queries/project';
 import { cn } from '@/lib/utils';
+import { useUpdateTaskMutation } from '@/hooks/use-update-task-mutation';
 
 import { Sidebar } from '@/components/sidebar';
 import { StatusSwitcher } from '@/components/status-switcher';
 import { AssigneeSwitcher } from '@/components/assinee-switcher';
 import { TaskForm, TaskFormValues } from '@/components/task-form';
-import { useUpdateTaskMutation } from '@/hooks/use-update-task-mutation';
 
 interface SidebarGroupLabelProps {
   className?: string;
@@ -70,7 +70,7 @@ interface IssueEditorSidebarProps {
 
 export const IssueEditorSidebar = ({ task, projectId }: IssueEditorSidebarProps) => {
   return (
-    <Sidebar className="min-w-[220px] max-w-[280px]">
+    <Sidebar className="hidden min-w-[220px] max-w-[280px] md:vertical">
       <TaskForm status={task.status} assignee={task?.assignee}>
         {form => <InnerIssueEditor {...form} projectId={projectId} task={task} />}
       </TaskForm>

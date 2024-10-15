@@ -44,15 +44,21 @@ export const StatusSwitcher = ({ className, ...props }: StatusSwitcherProps) => 
   const form = useTaskForm();
 
   return (
-    <FormField
-      control={form.control}
-      {...form.register('status')}
-      render={({ field }) => (
-        <FormItem>
-          <Popover open={showStatusMenu} onOpenChange={setShowStatusMenu}>
+    <Popover open={showStatusMenu} onOpenChange={setShowStatusMenu}>
+      <FormField
+        control={form.control}
+        {...form.register('status')}
+        render={({ field }) => (
+          <FormItem>
             <PopoverTrigger asChild>
               <FormControl>
-                <Button variant="ghost" role="combobox" className="relative gap-1" size="sm">
+                <Button
+                  variant="ghost"
+                  role="combobox"
+                  className="relative gap-1"
+                  size="sm"
+                  color="secondary"
+                >
                   <TaskStatusIndicator status={field.value} className="size-3" />
 
                   {taskStatuses.find(t => t.value === field.value)?.label}
@@ -63,7 +69,7 @@ export const StatusSwitcher = ({ className, ...props }: StatusSwitcherProps) => 
             <PopoverContent
               side="left"
               align="start"
-              className={cn('w-[235px] border border-muted-foreground/10 px-0', className)}
+              className={cn('w-fit border border-muted-foreground/10 px-0 md:w-[235px]', className)}
               {...props}
             >
               <Command>
@@ -101,9 +107,9 @@ export const StatusSwitcher = ({ className, ...props }: StatusSwitcherProps) => 
                 </CommandList>
               </Command>
             </PopoverContent>
-          </Popover>
-        </FormItem>
-      )}
-    />
+          </FormItem>
+        )}
+      />
+    </Popover>
   );
 };

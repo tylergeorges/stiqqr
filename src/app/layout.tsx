@@ -34,9 +34,12 @@ export default function RootLayout({
         <ReactQueryProvider>
           <Toaster
             toastOptions={{
-              className: 'bg-card text-card-foreground border-foreground/20',
+              className:
+                'bg-card text-card-foreground border-foreground/20 font-sans items-start leading-none',
+              descriptionClassName: 'leading-none text-muted-foreground mt-1.5',
               classNames: {
-                icon: 'text-muted-foreground'
+                title: 'leading-none',
+                icon: 'text-foreground/40'
               }
             }}
           />

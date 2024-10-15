@@ -40,7 +40,6 @@ const ControlledCreateTaskModal = ({ projectId, status }: ControlledCreateTaskMo
 };
 
 interface TaskListGroupProps {
-  // taskGroup: TaskGroup;
   tasks: Task[];
   status: Status;
   isAdmin: boolean;

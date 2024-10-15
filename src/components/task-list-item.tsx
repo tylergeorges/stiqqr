@@ -22,7 +22,7 @@ export const TaskListItem = ({ task, provided, snapshot }: TaskListItemProps) =>
   return (
     <TableRow
       className={cn(
-        'horizontal center-v',
+        'horizontal center-v hover:bg-foreground/[0.030]',
         !snapshot.isDragging && 'border-b border-b-muted-foreground/20'
         // 'even:bg-muted-foreground/10'
       )}

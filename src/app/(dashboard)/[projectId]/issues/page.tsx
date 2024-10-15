@@ -6,6 +6,7 @@ import { useTasksQuery } from '@/hooks/use-tasks-query';
 
 import { DashboardPageContainer } from '@/components/dashboard-page-container';
 import { TaskList } from '@/components/task-list';
+import { PageHeader } from '@/components/page-header';
 
 export const metadata: Metadata = {
   title: 'Issues'
@@ -18,7 +19,7 @@ export default async function IssuesPage({ params }: PageProps<{ projectId: stri
 
   return (
     <DashboardPageContainer>
-      <h1 className="text-2xl font-semibold">Issues</h1>
+      <PageHeader className='px-4'>Issues</PageHeader>
 
       <HydrationBoundary state={dehydrate(queryClient)}>
         <TaskList projectId={params.projectId} />

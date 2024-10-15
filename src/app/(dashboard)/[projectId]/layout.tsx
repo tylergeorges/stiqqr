@@ -10,12 +10,8 @@ import { useProjectMembersQuery } from '@/hooks/use-project-members-query';
 import { useMemberQuery } from '@/hooks/use-member-query';
 import { useProjectQuery } from '@/hooks/use-project-query';
 
-import { Sidebar } from '@/components/sidebar';
-import { ActiveLink } from '@/components/active-link';
-import { Icons } from '@/components/icons';
-import { ProjectSwitcher } from '@/components/project-switcher';
-import { UserNav } from '@/components/user-nav';
 import { CommandMenu } from '@/components/command-menu';
+import { ProjectSidebar } from '@/components/project-sidebar';
 
 export const metadata: Metadata = {
   title: {
@@ -58,29 +54,11 @@ export default async function DashboardLayout({
   ]);
 
   return (
-    <div className="size-full flex-1 bg-secondary horizontal">
+    <div className="size-full flex-1 bg-secondary horizontal motion-duration-500 motion-blur-in">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <CommandMenu />
 
-        <Sidebar className="h-full w-72 justify-between border-r center-h vertical">
-          <div className="mt-1 w-full vertical">
-            <ProjectSwitcher memberId={user.id} projectId={projectId} />
-
-            <div className="space-y-2">
-              <ActiveLink href={`/${projectId}/issues`} className="mt-8">
-                <Icons.Issues className="size-4 text-muted-foreground" />
-                Issues
-              </ActiveLink>
-
-              <ActiveLink href={`/${projectId}/members`}>
-                <Icons.Members className="size-4 text-muted-foreground" />
-                Members
-              </ActiveLink>
-            </div>
-          </div>
-
-          <UserNav></UserNav>
-        </Sidebar>
+        <ProjectSidebar projectId={projectId} user={user} />
 
         {children}
       </HydrationBoundary>
