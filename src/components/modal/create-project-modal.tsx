@@ -81,7 +81,9 @@ export const CreateProjectModal = ({ setShowNewProjectDialog }: CreateProjectMod
         </div>
 
         <DialogFooter>
-          <Button type="submit">Create</Button>
+          <Button size="sm" type="submit">
+            Create
+          </Button>
         </DialogFooter>
       </form>
     </DialogContent>

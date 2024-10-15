@@ -102,10 +102,7 @@ export const OnboardingForm = ({ user }: OnboardingFormProps) => {
                   autoFocus
                   autoComplete="off"
                   placeholder="Acme, Inc."
-                  className={cn(
-                    'w-full focus-visible:ring-2',
-                    errors?.projectName?.message ? 'ring-destructive' : ''
-                  )}
+                  className={cn(errors?.projectName?.message ? 'ring-destructive' : '')}
                   {...field}
                 />
               </FormControl>

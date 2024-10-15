@@ -86,7 +86,7 @@ export const CreateTaskModal = ({
       <TaskForm status={status}>
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit(createTask)}>
-            <DialogHeader className="mb-4">
+            <DialogHeader className="mb-4 text-left">
               <DialogTitle>New issue</DialogTitle>
               <DialogDescription>Create a new issue.</DialogDescription>
             </DialogHeader>
