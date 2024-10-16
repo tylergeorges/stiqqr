@@ -29,6 +29,10 @@
 <hr>
 </div>
 
+<br>
+
+![alt text](./public/assets/landing-page.png)
+
 ### Built With
 
 - ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
