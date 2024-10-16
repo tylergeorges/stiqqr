@@ -21,18 +21,13 @@ interface TaskListItemProps {
   form: TaskFormMethods;
 }
 
-export const TaskListItem = ({ task, provided, snapshot, form }: TaskListItemProps) => {
+export const TaskListItem = ({ task, provided, form }: TaskListItemProps) => {
   useUpdateTaskForm(form, task.projectId, task.id);
   const router = useRouter();
 
   return (
     <TableRow
-      className={cn(
-        'w-full rounded-none horizontal center-v hover:bg-foreground/[0.030]',
-        !snapshot.isDragging && 'border-b border-b-muted',
-        snapshot.draggingOver && 'border-t border-t-primary'
-        // 'even:bg-muted-foreground/10'
-      )}
+      className={cn('rounded-none border-none horizontal center-v hover:bg-foreground/[0.030]')}
       onClick={e => {
         e.preventDefault();
 
@@ -42,27 +37,37 @@ export const TaskListItem = ({ task, provided, snapshot, form }: TaskListItemPro
       {...provided.dragHandleProps}
       ref={provided.innerRef}
     >
-      <TableCell className="w-full flex-1 horizontal center-v">
-        <TaskStatusIndicator status={task.status} />
+      <TableCell className="horizontal center-v">
+        <TaskStatusIndicator status={task.status} className="size-4" />
 
-        <div className="ml-2">{task.title}</div>
+        <h1 className="ml-2 font-medium">{task.title}</h1>
+
+        {task.description && task.description.trim() ? (
+          <>
+            <span className="mx-2 text-muted-foreground">•</span>
+            <span className="text-muted-foreground"> {task.description}</span>
+          </>
+        ) : null}
       </TableCell>
 
-      <TableCell className="space-x-2 text-foreground/40 horizontal center-v">
-        {task.labels.map(label => (
-          <div key={label.name} className="px-2 text-xs horizontal center-v">
-            <div
-              className="size-[9px] rounded-full bg-[var(--label-color)]"
-              // @ts-expect-error - defining color variable
-              style={{ '--label-color': label.color }}
-            />
+      <TableCell className="ml-2 flex h-0 flex-1 p-0" />
 
-            <span className="ml-1.5 mr-[1px] leading-[normal]">{label.name}</span>
+      <TableCell className="ml-2 inline-flex h-fit max-h-fit max-w-fit p-0">
+        {task.labels.length ? (
+          <div className="space-x-4 text-foreground/40 horizontal center-v">
+            {task.labels.map(label => (
+              <div key={label.name} className="px-2 text-xs horizontal center-v">
+                <div
+                  className="size-[9px] rounded-full bg-[var(--label-color)]"
+                  // @ts-expect-error - defining color variable
+                  style={{ '--label-color': label.color }}
+                />
+
+                <span className="ml-1.5 mr-[1px] leading-[normal]">{label.name}</span>
+              </div>
+            ))}
           </div>
-        ))}
-
-        <ShortTimestamp timestamp={task.createdAt} />
-        <ShortTimestamp timestamp={task.updatedAt} />
+        ) : null}
 
         <AssigneeSwitcher projectId={task.projectId}>
           <button
@@ -72,7 +77,7 @@ export const TaskListItem = ({ task, provided, snapshot, form }: TaskListItemPro
             }}
           >
             {task.assignee ? (
-              <Avatar size="sm" className={cn('relative rounded-full')}>
+              <Avatar size="md" className={cn('relative rounded-full')}>
                 {task.assignee?.member.avatarUrl ? (
                   <AvatarImage
                     src={task.assignee.member.avatarUrl}
@@ -83,12 +88,16 @@ export const TaskListItem = ({ task, provided, snapshot, form }: TaskListItemPro
                 )}
               </Avatar>
             ) : (
-              <Avatar size="sm" className={'relative rounded-full'}>
-                <AvatarFallback className="rounded-full border-2 border-dotted border-muted-foreground" />
+              <Avatar size="md" className={'relative rounded-full'}>
+                <AvatarFallback className="rounded-full border border-dashed border-muted-foreground bg-transparent" />
               </Avatar>
             )}
           </button>
         </AssigneeSwitcher>
+      </TableCell>
+
+      <TableCell className="ml-2 h-fit max-h-fit w-6 p-0 text-foreground/40">
+        <ShortTimestamp timestamp={task.updatedAt} />
       </TableCell>
     </TableRow>
   );

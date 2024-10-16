@@ -89,7 +89,7 @@ export const TaskList = ({ projectId }: TaskListProps) => {
     <div className="size-full flex-1">
       {tasks.length ? (
         <DragDropContext onDragEnd={onDragEnd}>
-          <Table>
+          <Table className="border-0">
             {tasks.map(([status, group]) => {
               return (
                 <TaskListGroup

@@ -22,12 +22,12 @@ export const TaskStatusIndicator = ({ status, className }: TaskStatusIndicatorPr
       )}
     >
       {status === 'in-progress' && (
-        <div className={cn('aspect-square size-1.5 rounded-full bg-[lch(80_100_85)]')}></div>
+        <div className={cn('aspect-square size-[70%] rounded-full bg-[lch(80_100_85)]')}></div>
       )}
 
       {status === 'done' && <Icons.Check className="size-full text-background" />}
 
-      {status === 'canceled' && <Icons.Cross className="size-full text-background" />}
+      {status === 'canceled' && <Icons.Cross className="size-[70%] text-background" />}
     </div>
   );
 };

@@ -8,7 +8,6 @@ import type { Task } from '@/lib/db/queries/project';
 import { Status } from '@/lib/db/schema';
 
 import { renderTaskListItem } from '@/components/task-list-item';
-import { TaskStatusIndicator } from '@/components/task-status-indicator';
 import { Icons } from '@/components/icons';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { CreateTaskModal } from '@/components/modal/create-task-modal';
@@ -58,19 +57,19 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
           <>
             <TableHeader
               className={cn(
-                'border-2 border-blue-500 border-opacity-0 transition duration-300 border-b-0 rounded-t-0',
+                'rounded-t-0 mb-2 mt-4 border-0 border-b-0 border-blue-500 border-opacity-0 bg-transparent transition duration-300',
                 snapshot.isDraggingOver && draggingOverNewGroup === -1 && 'border-opacity-100'
               )}
             >
-              <TableRow className="w-full justify-between horizontal">
-                <TableHead>
-                  <TaskStatusIndicator status={status} />
-
+              <TableRow className="w-full justify-between border-0 border-none bg-transparent horizontal">
+                <TableHead className="border-0 bg-transparent leading-none">
                   {status === Status.Backlog && 'Backlog'}
                   {status === Status.Canceled && 'Canceled'}
                   {status === Status.Done && 'Done'}
                   {status === Status.InProgress && 'In Progress'}
                   {status === Status.Todo && 'Todo'}
+
+                  <span className="leading-none text-muted-foreground">{tasks.length}</span>
                 </TableHead>
 
                 <TableHead>
@@ -83,11 +82,8 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
 
             <TableBody
               ref={droppableProvided.innerRef}
+              className={cn('rounded-none text-sm')}
               {...droppableProvided.droppableProps}
-              className={cn(
-                ' rounded-none text-sm border-2 border-blue-500 border-opacity-0 border-t-0 transition duration-300',
-                snapshot.isDraggingOver && draggingOverNewGroup === -1 && 'border-opacity-100'
-              )}
             >
               {tasks.map((task, idx) => (
                 <Draggable key={task.title} draggableId={`${status}-${task.title}`} index={idx}>
