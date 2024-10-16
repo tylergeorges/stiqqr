@@ -34,7 +34,7 @@ export const UserNav = () => {
           fill
           variant="ghost"
           color="secondary"
-          className="pr-4 text-sm text-foreground center-v"
+          className="px-2 text-sm text-foreground center-v"
         >
           <div className="leading-none horizontal center-v">
             <Avatar className="mr-2 rounded-full" size="md">
@@ -51,7 +51,7 @@ export const UserNav = () => {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56 border border-foreground/10">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <div className="cursor-default select-none horizontal center-v">

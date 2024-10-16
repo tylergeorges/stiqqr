@@ -31,35 +31,27 @@ export default async function Home() {
 
   return (
     <section className="relative size-full flex-1 overflow-hidden bg-black center-h vertical selection:bg-white selection:text-black">
-      {/* <header className="sticky top-0 z-50 w-full backdrop-blur">
-        <div className="container h-14 max-w-screen-2xl select-none horizontal center">
-          <div className="mr-2 size-8 rounded-lg bg-[#F51C5D] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.6)] center vertical">
-            <Icons.Stiqqr className="size-6" />
-          </div>
-        </div>
-      </header> */}
-
       <div className="absolute -top-[calc(8rem_+_128px)] right-0 size-full horizontal center">
-        <BlurFade duration={0.7}  className="inset-0 mb-[8rem] size-full" delay={0.25}>
+        <BlurFade duration={0.7} className="inset-0 mb-[8rem] size-full" delay={0.25}>
           <Particles className="z-0 size-full flex-1" quantity={100} />
         </BlurFade>
       </div>
 
       <div className="relative z-10 mt-32 h-full max-w-[80rem] px-6 center vertical md:px-8">
         <div className="z-0 self-center justify-self-center text-center center vertical">
-          <BlurFade yOffset={-6} delay={0.25} className="gap-10 center vertical" >
+          <BlurFade yOffset={-6} delay={0.25} className="gap-10 center vertical">
             <h1 className="text relative mx-0 max-w-[43.5rem] text-balance to-foreground pt-5 text-left text-5xl font-bold leading-[1.1] tracking-tighter text-white sm:text-7xl md:px-4 md:py-2 md:text-center md:text-7xl md:leading-[] lg:max-w-screen-md lg:text-8xl">
               stiqqr
             </h1>
           </BlurFade>
 
-          <BlurFade  yOffset={-6} delay={0.25 * 2} className="mb-12">
+          <BlurFade yOffset={-6} delay={0.25 * 2} className="mb-12">
             <p className="text-md max-w-lg text-lg font-medium text-foreground/50 md:text-lg">
               A task management app
             </p>
           </BlurFade>
 
-          <BlurFade  yOffset={-6} delay={0.25 * 3} >
+          <BlurFade yOffset={-6} delay={0.25 * 3}>
             <div className="w-full flex-wrap space-x-4 horizontal center-v md:space-x-4 md:space-y-0">
               <LoginButton className="group/arrow" color="white">
                 Get Started
@@ -81,12 +73,12 @@ export default async function Home() {
         </div>
 
         <BlurFade
-          className="pointer-events-none mt-[8rem] inline-flex w-full select-none motion-preset-slide-up-sm motion-delay-500 "
+          className="motion-preset-slide-up-sm pointer-events-none mt-[8rem] inline-flex w-full select-none motion-delay-500"
           delay={0.25 * 2}
         >
           <div
             draggable={'false'}
-            className="pointer-events-none relative aspect-video size-full flex-1 select-none overflow-hidden rounded-xl md:-mb-32 before:w-full "
+            className="0 pointer-events-none relative aspect-video size-full flex-1 select-none overflow-hidden rounded-xl before:w-full md:-mb-32"
           >
             <Image
               width={2499}
@@ -99,7 +91,7 @@ export default async function Home() {
 
             <div
               draggable={'false'}
-              className="pointer-events-none absolute inset-0 z-10 aspect-video select-none [background:linear-gradient(to_top,black_30%,transparent)] "
+              className="pointer-events-none absolute inset-0 z-10 aspect-video select-none [background:linear-gradient(to_top,black_30%,transparent)]"
             />
           </div>
         </BlurFade>

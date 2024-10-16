@@ -28,7 +28,7 @@ export const ActionTooltip = forwardRef<TooltipElement, ActionTooltipProps>(
 
           <TooltipPortal>
             <TooltipContent side={side} align={align} ref={ref}>
-              <p className="text-sm font-semibold capitalize">{label}</p>
+              <p className="text-xs font-medium capitalize">{label}</p>
 
               <TooltipArrow className="fill-popover" />
             </TooltipContent>

@@ -51,46 +51,55 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
 
   return (
     <Droppable droppableId={status} renderClone={renderItem}>
-      {(droppableProvided, snapshot) => (
-        <>
-          <TableHeader>
-            <TableRow className="w-full justify-between horizontal">
-              <TableHead>
-                <TaskStatusIndicator status={status} />
+      {(droppableProvided, snapshot) => {
+        const draggingOverNewGroup = snapshot.draggingOverWith?.indexOf(status);
 
-                {status === Status.Backlog && 'Backlog'}
-                {status === Status.Canceled && 'Canceled'}
-                {status === Status.Done && 'Done'}
-                {status === Status.InProgress && 'In Progress'}
-                {status === Status.Todo && 'Todo'}
-              </TableHead>
+        return (
+          <>
+            <TableHeader
+              className={cn(
+                'border-2 border-blue-500 border-opacity-0 transition duration-300 border-b-0 rounded-t-0',
+                snapshot.isDraggingOver && draggingOverNewGroup === -1 && 'border-opacity-100'
+              )}
+            >
+              <TableRow className="w-full justify-between horizontal">
+                <TableHead>
+                  <TaskStatusIndicator status={status} />
 
-              <TableHead>
-                {isAdmin ? (
-                  <ControlledCreateTaskModal projectId={projectId} status={status} />
-                ) : null}
-              </TableHead>
-            </TableRow>
-          </TableHeader>
+                  {status === Status.Backlog && 'Backlog'}
+                  {status === Status.Canceled && 'Canceled'}
+                  {status === Status.Done && 'Done'}
+                  {status === Status.InProgress && 'In Progress'}
+                  {status === Status.Todo && 'Todo'}
+                </TableHead>
 
-          <TableBody
-            ref={droppableProvided.innerRef}
-            {...droppableProvided.droppableProps}
-            className={cn(
-              'w-full text-sm ring-2 ring-blue-500 ring-opacity-0 transition duration-300',
-              snapshot.isDraggingOver && 'ring-opacity-100'
-            )}
-          >
-            {tasks.map((task, idx) => (
-              <Draggable key={task.title} draggableId={task.title} index={idx}>
-                {renderItem}
-              </Draggable>
-            ))}
+                <TableHead>
+                  {isAdmin ? (
+                    <ControlledCreateTaskModal projectId={projectId} status={status} />
+                  ) : null}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
 
-            {droppableProvided.placeholder}
-          </TableBody>
-        </>
-      )}
+            <TableBody
+              ref={droppableProvided.innerRef}
+              {...droppableProvided.droppableProps}
+              className={cn(
+                ' rounded-none text-sm border-2 border-blue-500 border-opacity-0 border-t-0 transition duration-300',
+                snapshot.isDraggingOver && draggingOverNewGroup === -1 && 'border-opacity-100'
+              )}
+            >
+              {tasks.map((task, idx) => (
+                <Draggable key={task.title} draggableId={`${status}-${task.title}`} index={idx}>
+                  {renderItem}
+                </Draggable>
+              ))}
+
+              {droppableProvided.placeholder}
+            </TableBody>
+          </>
+        );
+      }}
     </Droppable>
   );
 };

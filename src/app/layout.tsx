@@ -35,7 +35,7 @@ export default function RootLayout({
           <Toaster
             toastOptions={{
               className:
-                'bg-card text-card-foreground border-foreground/20 font-sans items-start leading-none',
+                'bg-popover  border text-card-foreground border-foreground/[0.075] font-sans items-start leading-none ',
               descriptionClassName: 'leading-none text-muted-foreground mt-1.5',
               classNames: {
                 title: 'leading-none',

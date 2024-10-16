@@ -44,7 +44,7 @@ export const ProjectSwitcher = ({ memberId, projectId }: ProjectSwitcherProps) =
             size="lg"
             color="secondary"
             fill
-            className="pr-4 text-sm text-foreground"
+            className="px-2 text-sm text-foreground"
           >
             <div className="leading-none horizontal center-v">
               <Avatar className="mr-2">
@@ -66,7 +66,8 @@ export const ProjectSwitcher = ({ memberId, projectId }: ProjectSwitcherProps) =
                     key={project.project.id}
                     onSelect={() => {
                       if (!selectedProject || selectedProject.project.id !== project.project.id) {
-                        router.push(`/${project.project.name}/issues`);
+                        router.push(`/${project.project.id}/issues`);
+                        
                         setSelectedProject(project);
                         setOpen(false);
                       }

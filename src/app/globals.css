@@ -5,13 +5,15 @@
 @layer base {
   :root {
     /* --background: 31 31 31; */
-    --background: 32 32 32;
+    --background: 30 30 30;
     --foreground: 245 245 240;
 
-    --card: 38 38 38;
+    --card: 30 30 30;
+    /* --card: 38 38 38; */
     --card-foreground: var(--foreground);
 
     --popover: 38 38 38;
+    /* --popover: 38 38 38; */
     --popover-foreground: var(--foreground);
 
     --primary: 35 131 226;
@@ -23,8 +25,10 @@
     --secondary-foreground: var(--foreground);
 
     /* --muted: 32 32 32; */
-    --muted: 38 38 38;
-    --muted-foreground: 115 115 115;
+    --muted: 45 45 45;
+    --muted-foreground: 127 127 127;
+    /* --muted-foreground: 58 58 58; */
+    /* --muted-foreground: 115 115 115; */
 
     --input: var(--secondary);
 
@@ -33,6 +37,10 @@
     --destructive: 237 66 69;
     --success: 36 128 70;
   }
+}
+
+body {
+  /* font-feature-settings: 'ss05'; */
 }
 
 @layer components {

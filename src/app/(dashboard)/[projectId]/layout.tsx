@@ -54,7 +54,7 @@ export default async function DashboardLayout({
   ]);
 
   return (
-    <div className="size-full flex-1 bg-secondary horizontal motion-duration-500 motion-blur-in">
+    <div className="size-full flex-1  horizontal motion-duration-500 motion-blur-in">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <CommandMenu />
 

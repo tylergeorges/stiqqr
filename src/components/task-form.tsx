@@ -1,10 +1,12 @@
 'use client';
 
+import { useEffect } from 'react';
 import { z } from 'zod';
 import { useForm, useFormContext, UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Role, Status } from '@/lib/db/schema';
+import { useUpdateTaskMutation } from '@/hooks/use-update-task-mutation';
 
 import { Form } from '@/components/ui/form';
 
@@ -21,8 +23,27 @@ const taskFormSchema = z.object({
 
 export type TaskFormValues = z.infer<typeof taskFormSchema>;
 
+export type TaskFormMethods = UseFormReturn<TaskFormValues>;
+
 export const useTaskForm = () => {
   return useFormContext<TaskFormValues>();
+};
+
+export const useUpdateTaskForm = (form: TaskFormMethods, projectId: string, taskId: string) => {
+  const updateTaskMutation = useUpdateTaskMutation(projectId, taskId);
+
+  useEffect(() => {
+    const subscription = form.watch(data => {
+      updateTaskMutation.mutate({
+        taskId: taskId,
+        projectId,
+        assigneeId: data?.assignee ? data.assignee.id : null,
+        status: data?.status
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [taskId, updateTaskMutation, form, projectId]);
 };
 
 interface TaskFormProps {

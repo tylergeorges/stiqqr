@@ -24,9 +24,15 @@ import { FormField } from '@/components/ui/form';
 interface AssigneeSwitcherProps extends React.ComponentProps<typeof PopoverContent> {
   projectId: string;
   issueId?: string;
+  children?: React.PropsWithChildren['children'];
 }
 
-export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwitcherProps) => {
+export const AssigneeSwitcher = ({
+  projectId,
+  children,
+  className,
+  ...props
+}: AssigneeSwitcherProps) => {
   const [open, setOpen] = useState(false);
 
   const form = useTaskForm();
@@ -40,49 +46,57 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
       render={({ field }) => (
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              role="combobox"
-              className={cn('relative gap-1', field?.value ? 'text-foreground' : '')}
-              color="secondary"
-            >
-              {field?.value ? (
-                <>
-                  <Avatar className="rounded-md" size="sm">
-                    {field?.value.avatarUrl ? (
-                      <AvatarImage
-                        src={field?.value.avatarUrl}
-                        alt={`${field?.value.name}'s Avatar.`}
-                      />
-                    ) : (
-                      <AvatarFallback className="bg-muted-foreground font-bold">
-                        {field?.value.name[0].toUpperCase()}
-                      </AvatarFallback>
-                    )}
-                  </Avatar>
+            {children ? (
+              children
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                role="combobox"
+                className={cn('relative gap-1', field?.value ? 'text-foreground' : '')}
+                color="secondary"
+              >
+                {field?.value ? (
+                  <>
+                    <Avatar className="rounded-md" size="sm">
+                      {field?.value.avatarUrl ? (
+                        <AvatarImage
+                          src={field?.value.avatarUrl}
+                          alt={`${field?.value.name}'s Avatar.`}
+                        />
+                      ) : (
+                        <AvatarFallback className="bg-muted-foreground font-bold">
+                          {field?.value.name[0].toUpperCase()}
+                        </AvatarFallback>
+                      )}
+                    </Avatar>
 
-                  {field?.value.name}
-                </>
-              ) : (
-                <div className="contents">
-                  <Avatar className="rounded-md" size="sm">
-                    <AvatarFallback className="rounded-full border-2 border-dotted border-muted-foreground"></AvatarFallback>
-                  </Avatar>
+                    {field?.value.name}
+                  </>
+                ) : (
+                  <div className="contents">
+                    <Avatar className="rounded-md" size="sm">
+                      <AvatarFallback className="rounded-full border-2 border-dotted border-muted-foreground"></AvatarFallback>
+                    </Avatar>
 
-                  <span className="font-normal text-foreground/50">Assignee</span>
-                </div>
-              )}
-            </Button>
+                    <span className="font-normal text-foreground/50">Assignee</span>
+                  </div>
+                )}
+              </Button>
+            )}
           </PopoverTrigger>
 
           <PopoverContent
             side="left"
             align="start"
-            className={cn('border border-muted-foreground/10 px-0 w-fit md:w-[235px]', className)}
+            className={cn('w-fit border border-muted-foreground/10 px-0 md:w-[235px]', className)}
             {...props}
           >
-            <Command>
+            <Command
+              onClick={e => {
+                e.stopPropagation();
+              }}
+            >
               <CommandInput placeholder="Search members..." />
               <CommandList className="px-0">
                 <CommandEmpty></CommandEmpty>
@@ -105,11 +119,15 @@ export const AssigneeSwitcher = ({ projectId, className, ...props }: AssigneeSwi
                         }
 
                         setOpen(false);
+
                         form.setValue('assignee', {
                           id: assignee.member.id,
                           name: assignee.member.username,
                           avatarUrl: assignee.member.avatarUrl
                         });
+                      }}
+                      onClick={e => {
+                        e.stopPropagation();
                       }}
                     >
                       <div className="horizontal center-v">

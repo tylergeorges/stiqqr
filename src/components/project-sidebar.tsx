@@ -26,7 +26,7 @@ export const ProjectSidebar = ({ projectId, user }: ProjectSidebarProps) => {
       <Sidebar
         className={cn(
           'h-full w-[240px] justify-between border-r center-h vertical',
-          'absolute z-10 bg-secondary transition-transform duration-300 ease-in-out md:relative md:translate-x-0',
+          'absolute z-10 bg-background transition-transform duration-300 ease-in-out md:relative md:translate-x-0',
           isSidebarOpen ? 'translate-x-0' : '-translate-x-[240px]'
         )}
       >

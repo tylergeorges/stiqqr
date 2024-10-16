@@ -74,7 +74,7 @@ export default async function MembersPage({ params }: PageProps<{ projectId: str
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Icons.DotsVert className="size-2 text-foreground/40" />
+                    <Icons.DotsVert className="size-4 text-foreground/40" />
                   </DropdownMenuTrigger>
 
                   <DropdownMenuContent align="start" side="left" className="w-fit">
@@ -89,7 +89,6 @@ export default async function MembersPage({ params }: PageProps<{ projectId: str
             </TableRow>
           ))}
         </TableBody>
-        {/* </div> */}
       </Table>
     </DashboardPageContainer>
   );

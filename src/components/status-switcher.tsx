@@ -25,7 +25,7 @@ interface StatusData {
   value: Status;
 }
 
-const taskStatuses = [
+export const taskStatuses = [
   { label: 'Todo', value: Status.Todo },
   { label: 'In Progress', value: Status.InProgress },
   { label: 'Canceled', value: Status.Canceled },

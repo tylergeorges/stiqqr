@@ -222,8 +222,15 @@ export const Icons = {
     </svg>
   ),
   DotsVert: ({ ...props }: IconProps) => (
-    <svg fill="currentColor" viewBox="8 5 4 10" {...props}>
-      <path d="M10 9a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4z"></path>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="32"
+      height="32"
+      fill="currentColor"
+      viewBox="0 0 256 256"
+      {...props}
+    >
+      <path d="M156,128a28,28,0,1,1-28-28A28,28,0,0,1,156,128ZM128,76a28,28,0,1,0-28-28A28,28,0,0,0,128,76Zm0,104a28,28,0,1,0,28,28A28,28,0,0,0,128,180Z"></path>
     </svg>
   ),
   Star: ({ ...props }: IconProps) => (
