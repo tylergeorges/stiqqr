@@ -15,7 +15,6 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { CreateTaskModal } from '@/components/modal/create-task-modal';
 import { Table } from '@/components/ui/table';
-import { Icons } from '@/components/icons';
 
 interface ControlledTaskModalProps {
   projectId: string;
@@ -26,11 +25,8 @@ const ControlledTaskModal = ({ projectId }: ControlledTaskModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger >
-        <Button size="sm" className="pl-2">
-          <Icons.Plus className="mr-2 size-5" />
-          Create issue
-        </Button>
+      <DialogTrigger asChild>
+        <Button size="sm">Create new issue</Button>
       </DialogTrigger>
 
       <CreateTaskModal projectId={projectId} setOpen={setOpen} />
@@ -91,21 +87,23 @@ export const TaskList = ({ projectId }: TaskListProps) => {
 
   return (
     <div className="size-full flex-1">
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Table>
-          {tasks.map(([status, group]) => {
-            return (
-              <TaskListGroup
-                key={status}
-                projectId={projectId}
-                status={status}
-                tasks={group.tasks}
-                isAdmin={isAdmin}
-              />
-            );
-          })}
-        </Table>
-      </DragDropContext>
+      {tasks.length ? (
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Table>
+            {tasks.map(([status, group]) => {
+              return (
+                <TaskListGroup
+                  key={status}
+                  projectId={projectId}
+                  status={status}
+                  tasks={group.tasks}
+                  isAdmin={isAdmin}
+                />
+              );
+            })}
+          </Table>
+        </DragDropContext>
+      ) : null}
 
       {!tasks.length && isAdmin ? (
         <div className="size-full flex-1 horizontal center">

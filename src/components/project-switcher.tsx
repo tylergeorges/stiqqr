@@ -57,7 +57,7 @@ export const ProjectSwitcher = ({ memberId, projectId }: ProjectSwitcherProps) =
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent>
+        <PopoverContent className="bg-transparent">
           <Command>
             <CommandList>
               <CommandGroup heading="Projects">
@@ -67,12 +67,17 @@ export const ProjectSwitcher = ({ memberId, projectId }: ProjectSwitcherProps) =
                     onSelect={() => {
                       if (!selectedProject || selectedProject.project.id !== project.project.id) {
                         router.push(`/${project.project.id}/issues`);
-                        
+
                         setSelectedProject(project);
                         setOpen(false);
                       }
                     }}
-                    className="leading-none"
+                    className={cn(
+                      'leading-none',
+                      selectedProject?.project?.id === project.project.id
+                        ? 'bg-muted-foreground/15 text-foreground/90'
+                        : 'bg-transparent'
+                    )}
                   >
                     <Avatar className="mr-2">
                       <AvatarFallback className="bg-sky-400" />

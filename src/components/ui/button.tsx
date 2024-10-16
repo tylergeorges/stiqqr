@@ -28,7 +28,7 @@ const buttonVariants = tv({
       default: '',
       link: 'bg-transparent hover:bg-transparent hover:underline',
       outline:
-        'border border-secondary bg-transparent hover:bg-secondary hover:text-secondary-foreground',
+        'border border-secondary bg-transparent text-muted-foreground  hover:bg-foreground/[0.05] hover:text-secondary-foreground',
       ghost: 'border-none bg-transparent',
       transparent: 'bg-transparent hover:bg-transparent'
     },

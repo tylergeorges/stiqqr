@@ -82,16 +82,16 @@ export const CreateTaskModal = ({
   };
 
   return (
-    <DialogContent>
+    <DialogContent className="px-0 pb-0">
       <TaskForm status={status}>
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit(createTask)}>
-            <DialogHeader className="mb-4 text-left">
-              <DialogTitle>New issue</DialogTitle>
-              <DialogDescription>Create a new issue.</DialogDescription>
+            <DialogHeader className="gap-2 mb-4 items-center space-y-0 px-4 text-left horizontal">
+              <DialogTitle className="text-sm">New issue</DialogTitle>
+              <DialogDescription className="text-sm">Create a new issue.</DialogDescription>
             </DialogHeader>
 
-            <div>
+            <div className="px-4 pb-4">
               <div className="relative mx-auto max-w-[76ch] overflow-y-auto">
                 <Editor ref={editorRef} />
               </div>
@@ -107,7 +107,7 @@ export const CreateTaskModal = ({
               </div>
             </div>
 
-            <DialogFooter>
+            <DialogFooter className="border-t border-muted p-3">
               <Button type="submit" size="xs">
                 Create issue
               </Button>
