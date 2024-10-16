@@ -6,7 +6,7 @@ import { Task, updateTask, UpdateTask } from '@/lib/db/queries/project';
 import { GroupedTask } from '@/types/project';
 import { taskQueryKey } from '@/hooks/use-task-query';
 import { tasksQueryKey } from '@/hooks/use-tasks-query';
-import { Status, tasks } from '@/lib/db/schema';
+import { Status } from '@/lib/db/schema';
 
 export const useUpdateTaskMutation = (projectId: string, taskId: string) => {
   const queryClient = useQueryClient();
@@ -32,12 +32,16 @@ export const useUpdateTaskMutation = (projectId: string, taskId: string) => {
       });
 
       queryClient.setQueryData<GroupedTask>(taskListQueryKey, prev => {
-        if (!prev)
+        if (!prev) {
+          const status = updatedTask?.status ?? Status.Todo;
+
           return {
-            [updatedTask?.status ?? Status.Todo]: {
+            ...prevTasks,
+            [status]: {
               tasks: [updatedTask]
             }
           } as GroupedTask;
+        }
 
         const statusGroup = prev[updatedTask.status ?? Status.Todo];
 
