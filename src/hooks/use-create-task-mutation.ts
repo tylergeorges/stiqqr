@@ -2,10 +2,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import type { InsertTask } from '@/lib/db/schema';
-import { insertTask, Task } from '@/lib/db/queries/project';
+import { insertTask } from '@/lib/db/queries/project';
 
 import { tasksQueryKey } from '@/hooks/use-tasks-query';
 import { GroupedTask } from '@/types/project';
+import { ProjectMember, projectMembersQueryKey } from '@/hooks/use-project-members-query';
+import { generateUuid } from '@/lib/utils';
 
 export const useCreateTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();
@@ -22,20 +24,76 @@ export const useCreateTaskMutation = (projectId: string) => {
 
       const prevTasks = queryClient.getQueryData<GroupedTask>(queryKey);
 
+      const projectMembers =
+        queryClient.getQueryData<ProjectMember[]>([...projectMembersQueryKey, projectId]) ?? [];
+
+      const taskAssignee =
+        task.assigneeId === null
+          ? null
+          : projectMembers.find(member => member.member.id === task.assigneeId);
+
       queryClient.setQueryData<GroupedTask>(queryKey, prev => {
-        if (!task.status) return prev;
+        if (!task.status || !prev) return prev;
 
-        const tasks = { ...prev } as GroupedTask;
+        const statusGroupIdx = prev.findIndex(group => group[0].status === task.status);
 
-        if (!Object.hasOwn(tasks, task.status)) {
-          tasks[task.status] = { tasks: [] };
+        if (statusGroupIdx < 0) {
+          prev.push([
+            {
+              // ...task,
+
+              assigneeId: task.assigneeId || null,
+              createdAt: task.createdAt || new Date(),
+              description: task.description || null,
+              id: task.id || generateUuid(),
+              labels: [],
+              projectId: task.projectId,
+              status: task.status,
+              title: task.title,
+              updatedAt: task.updatedAt || new Date(),
+              assignee: taskAssignee
+                ? {
+                    joinedAt: taskAssignee?.joinedAt,
+                    member: taskAssignee?.member,
+                    memberId: taskAssignee?.member.id,
+                    projectId: task.projectId,
+                    role: taskAssignee.role
+                  }
+                : null
+            }
+          ]);
+
+          return prev;
         }
 
-        const statusGroup = tasks[task.status];
+        const statusGroup = [...prev[statusGroupIdx]];
 
-        statusGroup.tasks.push(task as Task);
+        statusGroup.push({
+          assigneeId: task.assigneeId || null,
+          createdAt: task.createdAt || new Date(),
+          description: task.description || null,
+          id: task.id || generateUuid(),
+          labels: [],
+          projectId: task.projectId,
+          status: task.status,
+          title: task.title,
+          updatedAt: task.updatedAt || new Date(),
+          assignee: taskAssignee
+            ? {
+                joinedAt: taskAssignee?.joinedAt,
+                member: taskAssignee?.member,
+                memberId: taskAssignee?.member.id,
+                projectId: task.projectId,
+                role: taskAssignee.role
+              }
+            : null
+        });
 
-        return tasks;
+        return prev.map((group, idx) => {
+          if (idx === statusGroupIdx) return statusGroup;
+
+          return group;
+        });
       });
 
       return { prevTasks };

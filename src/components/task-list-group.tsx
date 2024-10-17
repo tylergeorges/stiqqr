@@ -74,7 +74,7 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
 
                 <TableHead>
                   {isAdmin ? (
-                    <ControlledCreateTaskModal projectId={projectId} status={status} />
+                    <ControlledCreateTaskModal  projectId={projectId} status={status} />
                   ) : null}
                 </TableHead>
               </TableRow>

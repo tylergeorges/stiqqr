@@ -112,7 +112,6 @@ export const userRelations = relations(users, ({ many }) => ({
   projectMembers: many(projectMembers)
 }));
 
-export type ProjectMember = typeof projectMembers.$inferSelect;
 export type InsertProjectMember = typeof projectMembers.$inferInsert;
 
 export type InsertTask = typeof tasks.$inferInsert;

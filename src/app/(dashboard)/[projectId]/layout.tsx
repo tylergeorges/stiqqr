@@ -56,6 +56,7 @@ export default async function DashboardLayout({
   return (
     <div className="size-full flex-1 horizontal">
       <HydrationBoundary state={dehydrate(queryClient)}>
+        
         <CommandMenu />
 
         <ProjectSidebar projectId={projectId} user={user} />
