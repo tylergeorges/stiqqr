@@ -11,15 +11,4 @@ export interface TaskGroup {
   label: string;
 }
 
-// export interface Task {
-//   name: string;
-//   status: Status;
-//   assignee: ProjectMember;
-//   labels: ProjectLabel[];
-//   createdAt: Date;
-//   updatedAt: Date;
-//   project: Project;
-// }
-
-export type GroupedTask = Record<Status, { tasks: Task[] }>;
-// export type GroupedTask = Record<Status, { tasks: Task[]; group: TaskGroup }>;
+export type GroupedTask = Array<Task[]>;

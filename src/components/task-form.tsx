@@ -38,7 +38,8 @@ export const useUpdateTaskForm = (form: TaskFormMethods, projectId: string, task
         taskId: taskId,
         projectId,
         assigneeId: data?.assignee ? data.assignee.id : null,
-        status: data?.status
+        status: data?.status,
+        updatedAt:new Date()
       });
     });
 

@@ -39,7 +39,9 @@ const InnerIssueEditor = ({ projectId, task, ...form }: InnerIssueEditorProps) =
         taskId: task.id,
         projectId,
         assigneeId: data?.assignee ? data.assignee.id : null,
-        status: data?.status
+        status: data?.status,
+        updatedAt: new Date(),
+        
       });
     });
 

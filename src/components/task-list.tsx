@@ -5,10 +5,9 @@ import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { tasksQueryKey, useTasksQuery } from '@/hooks/use-tasks-query';
-import { entries } from '@/lib/utils';
-import type { GroupedTask } from '@/types/project';
 import { Role, Status } from '@/lib/db/schema/projects';
 import { useCurrentMember } from '@/hooks/use-current-member';
+import { useUpdateTaskMutation } from '@/hooks/use-update-task-mutation';
 
 import { TaskListGroup } from '@/components/task-list-group';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
@@ -44,6 +43,8 @@ export const TaskList = ({ projectId }: TaskListProps) => {
 
   const { data: member } = useSuspenseQuery(useCurrentMember());
 
+  const updatedTaskMutation = useUpdateTaskMutation(projectId);
+
   const onDragEnd: OnDragEndResponder = result => {
     // dropped outside the list
     if (!result.destination) return;
@@ -52,51 +53,67 @@ export const TaskList = ({ projectId }: TaskListProps) => {
 
     const start = source.index;
     const end = destination.index;
-    const status = destination.droppableId as Status;
 
-    const items = structuredClone(projectTasks);
+    let items = projectTasks;
 
     const prevGroupStatus = result.source.droppableId as Status;
     const newGroupStatus = destination.droppableId as Status;
 
-    const tasks = items[newGroupStatus].tasks;
+    const newGroupIdx = items.findIndex(group => group[0].status === newGroupStatus);
+
+    const prevGroupIdx = items.findIndex(group => group[0].status === prevGroupStatus);
+
+    const tasks = items[newGroupIdx];
 
     // same group
     if (prevGroupStatus === newGroupStatus) {
       const [removed] = tasks.splice(start, 1);
 
-      tasks.splice(end, 0, { ...removed, status: status });
+      tasks.splice(end, 0, { ...removed });
 
-      items[status].tasks = tasks;
+      items[newGroupIdx] = tasks;
     } else {
-      const [removed] = items[prevGroupStatus].tasks.splice(start, 1);
+      const [removed] = items[prevGroupIdx].splice(start, 1);
 
-      items[newGroupStatus].tasks.splice(end, 0, { ...removed, status: newGroupStatus });
+      tasks.splice(end, 0, { ...removed, status: newGroupStatus });
 
-      if (!items[prevGroupStatus].tasks.length) {
-        delete items[prevGroupStatus];
+      updatedTaskMutation.mutate(
+        {
+          projectId: removed.projectId,
+          taskId: removed.id,
+          updatedAt: new Date(),
+          assigneeId: removed.assigneeId,
+          description: removed?.description ?? undefined,
+          title: removed.title,
+          status: newGroupStatus
+        },
+        {}
+      );
+
+      if (!items[prevGroupIdx].length) {
+        items = items.filter((_, idx) => idx !== prevGroupIdx);
       }
+
+      items[newGroupIdx] = tasks;
     }
 
-    queryClient.setQueryData<GroupedTask>([...tasksQueryKey, projectId], items);
+    queryClient.setQueryData([...tasksQueryKey, projectId], items);
   };
-
-  const tasks = entries(projectTasks);
 
   const isAdmin = member.role === Role.Owner || member.role === Role.Admin;
 
   return (
     <div className="size-full flex-1">
-      {tasks.length ? (
+      {projectTasks.length ? (
         <DragDropContext onDragEnd={onDragEnd}>
           <Table className="border-0">
-            {tasks.map(([status, group]) => {
+            {projectTasks.map(taskGroup => {
               return (
                 <TaskListGroup
-                  key={status}
+                  key={taskGroup[0].status}
                   projectId={projectId}
-                  status={status}
-                  tasks={group.tasks}
+                  status={taskGroup[0].status}
+                  tasks={taskGroup}
                   isAdmin={isAdmin}
                 />
               );
@@ -105,7 +122,7 @@ export const TaskList = ({ projectId }: TaskListProps) => {
         </DragDropContext>
       ) : null}
 
-      {!tasks.length && isAdmin ? (
+      {!projectTasks.length && isAdmin ? (
         <div className="size-full flex-1 horizontal center">
           <ControlledTaskModal projectId={projectId} />
         </div>

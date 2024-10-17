@@ -1,9 +1,7 @@
-import { cn, getRelativeTimeString } from '@/lib/utils';
+'use client';
 
-// const rtf = new Intl.RelativeTimeFormat('en', {
-//   style: 'narrow', // long (default), short, narrow
-//   numeric: 'always' // always (default), auto
-// });
+import { cn, getRelativeTimeString } from '@/lib/utils';
+import { useState } from 'react';
 
 interface TimeProps {
   timestamp: Date;
@@ -11,19 +9,18 @@ interface TimeProps {
 }
 
 export const ShortTimestamp = ({ timestamp, className }: TimeProps) => {
-  const formatted = getRelativeTimeString(timestamp, 'narrow');
+  const [formatted] = useState(() => getRelativeTimeString(timestamp, 'narrow'));
 
   return (
-    <time className={cn('', className)}>
+    <time className={cn('', className)} suppressHydrationWarning>
       {formatted}
-      {/* {timestamp.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} */}
     </time>
   );
 };
 
 export const LongTimestamp = ({ timestamp, className }: TimeProps) => {
   return (
-    <time className={cn('', className)}>
+    <time className={cn('', className)} suppressHydrationWarning>
       {timestamp.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
     </time>
   );

@@ -49,7 +49,7 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
   const renderItem = renderTaskListItem(tasks);
 
   return (
-    <Droppable droppableId={status} renderClone={renderItem}>
+    <Droppable type={'sub'} droppableId={status} renderClone={renderItem}>
       {(droppableProvided, snapshot) => {
         const draggingOverNewGroup = snapshot.draggingOverWith?.indexOf(status);
 
@@ -57,7 +57,7 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
           <>
             <TableHeader
               className={cn(
-                'rounded-t-0 mb-2 mt-4 border-0 border-b-0 border-blue-500 border-opacity-0 bg-transparent transition duration-300',
+                'rounded-t-0 mb-2 mt-4 border-0 border-b-0 border-blue-500 border-opacity-0 bg-transparent',
                 snapshot.isDraggingOver && draggingOverNewGroup === -1 && 'border-opacity-100'
               )}
             >
@@ -86,7 +86,7 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
               {...droppableProvided.droppableProps}
             >
               {tasks.map((task, idx) => (
-                <Draggable key={task.title} draggableId={`${status}-${task.title}`} index={idx}>
+                <Draggable  key={task.title} draggableId={task.id}  index={idx}>
                   {renderItem}
                 </Draggable>
               ))}

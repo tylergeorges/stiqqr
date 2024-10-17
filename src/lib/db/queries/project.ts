@@ -114,11 +114,12 @@ export const updateTask = async ({
   title,
   assigneeId,
   status,
-  projectId
+  projectId,
+  updatedAt
 }: UpdateTask) => {
   await db
     .update(tasks)
-    .set({ title, assigneeId, description, projectId, status })
+    .set({ title, assigneeId, description, projectId, status, updatedAt })
     .where(eq(tasks.id, taskId));
   // .returning();
 
@@ -226,4 +227,5 @@ export type UpdateTask = {
   status?: Status;
   taskId: string;
   projectId: string;
+  updatedAt: Date;
 };

@@ -89,7 +89,7 @@ export const getRelativeTimeString = (
 
     const customFormattedString = parts
       .map(part => {
-        if (part.type === 'literal') {
+        if (part.type === 'literal' && part.value !== 'now') {
           return part.value.slice(0, part.value.indexOf(' '));
         }
 
@@ -102,3 +102,5 @@ export const getRelativeTimeString = (
 
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 };
+
+export const arr = (length: number) => Array.from({ length }).fill(0);

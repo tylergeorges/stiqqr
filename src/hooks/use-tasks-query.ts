@@ -17,19 +17,21 @@ export const getGroupLabel = (group: Status) => {
 };
 
 const groupTasks = (tasks: Task[]): GroupedTask => {
-  const taskLookup = {} as GroupedTask;
+  const taskLookup = [] as GroupedTask;
+
+  const tasksIndex = {} as Record<Status, number>;
 
   for (let i = 0; i < tasks.length; i++) {
     const projectTask = tasks[i];
-    const issueGroup = taskLookup[projectTask.status];
 
-    if (issueGroup === undefined) {
-      taskLookup[projectTask.status] = {
-        tasks: []
-      };
+    const issueGroupIdx = tasksIndex[projectTask.status];
+
+    if (issueGroupIdx === undefined) {
+      taskLookup.push([]);
+      tasksIndex[projectTask.status] = taskLookup.length - 1;
     }
 
-    taskLookup[projectTask.status].tasks.push(projectTask);
+    taskLookup[tasksIndex[projectTask.status]].push(projectTask);
   }
 
   return taskLookup;
