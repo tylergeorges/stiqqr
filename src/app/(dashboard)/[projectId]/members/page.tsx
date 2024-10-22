@@ -1,7 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
-import { cn } from '@/lib/utils';
 import type { PageProps } from '@/types';
 import { useProjectMembersQuery } from '@/hooks/use-project-members-query';
 
@@ -38,13 +37,16 @@ export default async function MembersPage({ params }: PageProps<{ projectId: str
     <DashboardPageContainer>
       <PageHeader className="px-4 md:px-0">Members</PageHeader>
 
-      <Table className="">
+      <Table className="w-full px-4">
         <TableHeader></TableHeader>
 
-        <TableBody>
+        <TableBody className="w-full">
           {members.map(projectMember => (
-            <TableRow key={projectMember.member.id} className={cn('odd:bg-muted-foreground/10')}>
-              <TableCell className="size-fit w-fit max-w-fit gap-3 p-0 horizontal">
+            <TableRow
+              key={projectMember.member.id}
+              className={'w-full justify-between border-none horizontal odd:bg-muted-foreground/10'}
+            >
+              <TableCell className="w-full gap-3 p-0 horizontal">
                 <Avatar size="md" className={'relative rounded-full'}>
                   {projectMember.member.avatarUrl ? (
                     <AvatarImage

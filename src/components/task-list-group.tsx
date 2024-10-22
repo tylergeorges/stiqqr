@@ -14,6 +14,7 @@ import { CreateTaskModal } from '@/components/modal/create-task-modal';
 import { TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ActionTooltip } from '@/components/action-tooltip';
 import { Button } from '@/components/ui/button';
+import { TaskStatusIndicator } from '@/components/task-status-indicator';
 
 interface ControlledCreateTaskModalProps {
   status: Status;
@@ -63,6 +64,7 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
             >
               <TableRow className="w-full justify-between border-0 border-none bg-transparent horizontal">
                 <TableHead className="border-0 bg-transparent leading-none">
+                  <TaskStatusIndicator status={status} className='size-4'/>
                   {status === Status.Backlog && 'Backlog'}
                   {status === Status.Canceled && 'Canceled'}
                   {status === Status.Done && 'Done'}

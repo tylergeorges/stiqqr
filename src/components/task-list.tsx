@@ -67,9 +67,20 @@ export const TaskList = ({ projectId }: TaskListProps) => {
 
     // same group
     if (prevGroupStatus === newGroupStatus) {
-      const [removed] = tasks.splice(start, 1);
+      const [item] = tasks.splice(start, 1);
 
-      tasks.splice(end, 0, { ...removed });
+      tasks.splice(end, 0, { ...item });
+
+      updatedTaskMutation.mutate(
+        {
+          projectId: item.projectId,
+          taskId: item.id,
+          updatedAt: new Date(),
+          title: item.title,
+          position: end
+        },
+        {}
+      );
 
       items[newGroupIdx] = tasks;
     } else {
@@ -85,6 +96,7 @@ export const TaskList = ({ projectId }: TaskListProps) => {
           assigneeId: removed.assigneeId,
           description: removed?.description ?? undefined,
           title: removed.title,
+          position: end,
           status: newGroupStatus
         },
         {}

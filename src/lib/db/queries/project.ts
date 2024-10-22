@@ -1,6 +1,6 @@
 'use server';
 
-import { eq, asc, and } from 'drizzle-orm';
+import { eq, asc, and, desc } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 
 import { db } from '@/lib/db';
@@ -48,6 +48,7 @@ export const getTaskInfo = async (projectId: string, taskId: string) => {
       status: true,
       title: true,
       createdAt: true,
+      position: true,
       projectId: true,
       updatedAt: true
     },
@@ -66,7 +67,7 @@ export const getTaskInfo = async (projectId: string, taskId: string) => {
 export const getProjectTasks = async (projectId: string) => {
   return db.query.tasks.findMany({
     where: and(eq(tasks.projectId, projectId)),
-
+    orderBy: [asc(tasks.position), desc(tasks.updatedAt)],
     columns: {
       assigneeId: true,
       description: true,
@@ -75,6 +76,7 @@ export const getProjectTasks = async (projectId: string) => {
       title: true,
       projectId: true,
       createdAt: true,
+      position: true,
       updatedAt: true
     },
 
@@ -115,11 +117,12 @@ export const updateTask = async ({
   assigneeId,
   status,
   projectId,
+  position,
   updatedAt
 }: UpdateTask) => {
   await db
     .update(tasks)
-    .set({ title, assigneeId, description, projectId, status, updatedAt })
+    .set({ title, position, assigneeId, description, projectId, status, updatedAt })
     .where(eq(tasks.id, taskId));
   // .returning();
 
@@ -226,6 +229,7 @@ export type UpdateTask = {
   assigneeId?: string | null;
   status?: Status;
   taskId: string;
+  position: number;
   projectId: string;
   updatedAt: Date;
 };

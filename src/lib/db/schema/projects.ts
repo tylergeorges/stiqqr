@@ -1,5 +1,13 @@
 import { relations } from 'drizzle-orm';
-import { pgEnum, pgTable, primaryKey, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import {
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  uuid,
+  serial
+} from 'drizzle-orm/pg-core';
 
 import { users } from '@/lib/db/schema/users';
 import { enumToPgEnum } from '@/lib/utils';
@@ -37,6 +45,7 @@ export const tasks = pgTable('tasks', {
   title: text('title').notNull(),
   description: text('description'),
   status: status('status').default(Status.Todo).notNull(),
+  position: serial('position').notNull(),
   projectId: uuid('project_id')
     .notNull()
     .references(() => projects.id, { onDelete: 'cascade' }),

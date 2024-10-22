@@ -100,6 +100,8 @@ export const getRelativeTimeString = (
     return customFormattedString;
   }
 
+  console.log(unitIndex)
+
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 };
 
