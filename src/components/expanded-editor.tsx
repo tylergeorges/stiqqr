@@ -15,7 +15,14 @@ export const ExpandedEditor = ({ projectId, taskId, task }: ExpandedEditorProps)
   const updateTask = useUpdateTaskMutation(projectId, taskId);
 
   const debouncedUpdateTask = (title?: string, description?: string) => {
-    updateTask.mutate({ title, description, taskId, projectId, updatedAt: new Date() });
+    updateTask.mutate({
+      title,
+      description,
+      taskId,
+      projectId,
+      position: task.position,
+      updatedAt: new Date()
+    });
   };
 
   return (

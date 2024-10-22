@@ -16,8 +16,10 @@ export default async function ProjectInvitePage({ params }: Props) {
 
   if (!user) redirect(`/`);
 
+  const { inviteCode } = await params;
+
   //  check if user is already a member of the guild
-  const projectExistsData = await getProjectFromInvite(params.inviteCode, user.id);
+  const projectExistsData = await getProjectFromInvite(inviteCode, user.id);
 
   if (projectExistsData) {
     const { project: existingProject } = projectExistsData;
@@ -26,7 +28,7 @@ export default async function ProjectInvitePage({ params }: Props) {
   }
 
   // add user to guild
-  const newProjectMemberData = await addMemberToProject(params.inviteCode, user.id);
+  const newProjectMemberData = await addMemberToProject(inviteCode, user.id);
 
   if (newProjectMemberData) {
     const { project } = newProjectMemberData;

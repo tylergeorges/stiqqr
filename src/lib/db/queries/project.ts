@@ -229,7 +229,7 @@ export type UpdateTask = {
   assigneeId?: string | null;
   status?: Status;
   taskId: string;
-  position: number;
+  position?: number;
   projectId: string;
   updatedAt: Date;
 };

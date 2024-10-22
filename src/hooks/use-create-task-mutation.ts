@@ -38,10 +38,12 @@ export const useCreateTaskMutation = (projectId: string) => {
         const statusGroupIdx = prev.findIndex(group => group[0].status === task.status);
 
         if (statusGroupIdx < 0) {
+          const statusGroup = prev[statusGroupIdx];
+
           prev.push([
             {
               // ...task,
-
+              position: statusGroup[statusGroup.length - 1].position + 1,
               assigneeId: task.assigneeId || null,
               createdAt: task.createdAt || new Date(),
               description: task.description || null,
@@ -77,6 +79,7 @@ export const useCreateTaskMutation = (projectId: string) => {
           projectId: task.projectId,
           status: task.status,
           title: task.title,
+          position: statusGroup[statusGroup.length - 1].position + 1,
           updatedAt: task.updatedAt || new Date(),
           assignee: taskAssignee
             ? {
