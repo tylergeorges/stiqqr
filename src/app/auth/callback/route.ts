@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const code = searchParams.get('code');
 
   if (code) {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const {
       error,
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
           username: user.user_metadata.name,
           avatarUrl: user.user_metadata.avatar_url,
           id: user.id,
-          email: email,
+          email: email
         });
       }
 

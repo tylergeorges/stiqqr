@@ -74,7 +74,7 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
 
                 <TableHead>
                   {isAdmin ? (
-                    <ControlledCreateTaskModal  projectId={projectId} status={status} />
+                    <ControlledCreateTaskModal projectId={projectId} status={status} />
                   ) : null}
                 </TableHead>
               </TableRow>
@@ -86,7 +86,7 @@ export const TaskListGroup = ({ status, tasks, projectId, isAdmin }: TaskListGro
               {...droppableProvided.droppableProps}
             >
               {tasks.map((task, idx) => (
-                <Draggable  key={task.title} draggableId={task.id}  index={idx}>
+                <Draggable key={task.id} draggableId={task.id} index={idx}>
                   {renderItem}
                 </Draggable>
               ))}

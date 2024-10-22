@@ -103,7 +103,7 @@ export const TaskList = ({ projectId }: TaskListProps) => {
   const isAdmin = member.role === Role.Owner || member.role === Role.Admin;
 
   return (
-    <div className="size-full flex-1">
+    <div className="size-full flex-1 overflow-y-auto">
       {projectTasks.length ? (
         <DragDropContext onDragEnd={onDragEnd}>
           <Table className="border-0">

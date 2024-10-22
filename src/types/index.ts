@@ -4,13 +4,13 @@ export type LayoutProps<Params extends {} = Record<never, never>> = keyof Params
     }
   : {
       children: React.ReactNode;
-      params: Params;
+      params: Promise<Params>;
     };
 
 export type PageProps<Params extends {} = Record<never, never>> = keyof Params extends never
   ? never
   : {
-      params: Params;
+      params: Promise<Params>;
     };
 
 export interface User {

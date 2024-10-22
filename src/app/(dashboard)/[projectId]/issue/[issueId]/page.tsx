@@ -24,10 +24,12 @@ type Props = PageProps<Params>;
 const queryClient = new QueryClient();
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const task = await queryClient.fetchQuery({
-    queryFn: () => getTaskInfo(params.projectId, params.issueId),
+  const { issueId, projectId } = await params;
 
-    queryKey: [...taskQueryKey, params.projectId, params.issueId]
+  const task = await queryClient.fetchQuery({
+    queryFn: () => getTaskInfo(projectId, issueId),
+
+    queryKey: [...taskQueryKey, projectId, issueId]
   });
 
   return {
@@ -40,11 +42,13 @@ export default async function ProjectIssuePage({ params }: Props) {
 
   if (!user) redirect(`/`);
 
-  const task = await queryClient.fetchQuery(useTaskQuery(params.projectId, params.issueId));
+  const { issueId, projectId } = await params;
 
-  const project = await queryClient.fetchQuery(useProjectQuery(params.projectId, user.id));
+  const task = await queryClient.fetchQuery(useTaskQuery(projectId, issueId));
 
-  if (!task || !project) return redirect(`/${params.projectId}/issues`);
+  const project = await queryClient.fetchQuery(useProjectQuery(projectId, user.id));
+
+  if (!task || !project) return redirect(`/${projectId}/issues`);
 
   return (
     <div className="size-full flex-1">
@@ -52,13 +56,13 @@ export default async function ProjectIssuePage({ params }: Props) {
         <div className="flex-1 gap-8 px-9 py-6 vertical">
           <div className="gap-2 vertical">
             <PageHeader className="">{project?.project.name}</PageHeader>
-            <TaskToolbar projectId={params.projectId} task={task} />
+            <TaskToolbar projectId={projectId} task={task} />
           </div>
 
-          <ExpandedEditor projectId={params.projectId} taskId={task.id} task={task} />
+          <ExpandedEditor projectId={projectId} taskId={task.id} task={task} />
         </div>
 
-        <IssueEditorSidebar task={task} projectId={params.projectId} />
+        <IssueEditorSidebar task={task} projectId={projectId} />
       </div>
     </div>
   );

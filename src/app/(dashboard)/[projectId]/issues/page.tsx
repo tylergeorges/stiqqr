@@ -15,14 +15,16 @@ export const metadata: Metadata = {
 export default async function IssuesPage({ params }: PageProps<{ projectId: string }>) {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(useTasksQuery(params.projectId));
+  const { projectId } = await params;
+
+  await queryClient.prefetchQuery(useTasksQuery(projectId));
 
   return (
     <DashboardPageContainer>
-      <PageHeader className='px-4'>Issues</PageHeader>
+      <PageHeader className="px-4">Issues</PageHeader>
 
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <TaskList projectId={params.projectId} />
+        <TaskList projectId={projectId} />
       </HydrationBoundary>
     </DashboardPageContainer>
   );

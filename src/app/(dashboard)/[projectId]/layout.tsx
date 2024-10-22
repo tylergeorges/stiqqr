@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 export default async function DashboardLayout({
   children,
-  params: { projectId }
+  params
 }: LayoutProps<{ projectId: string }>) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { refetchOnWindowFocus: false } }
@@ -34,6 +34,8 @@ export default async function DashboardLayout({
   if (!user) {
     redirect('/');
   }
+
+  const { projectId } = await params;
 
   const projects = await queryClient.fetchQuery(useProjectsQuery(user.id));
 
@@ -56,7 +58,6 @@ export default async function DashboardLayout({
   return (
     <div className="size-full flex-1 horizontal">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        
         <CommandMenu />
 
         <ProjectSidebar projectId={projectId} user={user} />

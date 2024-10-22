@@ -9,8 +9,9 @@ import { getUser } from '@/lib/supabase/get-user';
 import { Icons } from '@/components/icons';
 import { LoginButton } from '@/components/login-button';
 import { ButtonLink } from '@/components/ui/button';
-import { BlurFade } from '@/components/blur-fade';
-import { Particles } from '@/components/particles';
+import { BlurFade } from '@/components/magicui/blur-fade';
+import { Particles } from '@/components/magicui/particles';
+import { SparklesText } from '@/components/magicui/sparkles-text';
 
 interface RedirectToProjectsProps {
   user: User;
@@ -40,9 +41,13 @@ export default async function Home() {
       <div className="relative z-10 mt-32 h-full max-w-[80rem] px-6 center vertical md:px-8">
         <div className="z-0 self-center justify-self-center text-center center vertical">
           <BlurFade yOffset={-6} delay={0.25} className="gap-10 center vertical">
-            <h1 className="text relative mx-0 max-w-[43.5rem] text-balance to-foreground pt-5 text-left text-5xl font-bold leading-[1.1] tracking-tighter text-white sm:text-7xl md:px-4 md:py-2 md:text-center md:text-7xl md:leading-[] lg:max-w-screen-md lg:text-8xl">
+            {/* <h1 className="text relative mx-0 max-w-[43.5rem] text-balance to-foreground pt-5 text-left text-5xl font-bold leading-[1.1] tracking-tighter text-white sm:text-7xl md:px-4 md:py-2 md:text-center md:text-7xl md:leading-[] lg:max-w-screen-md lg:text-8xl"> */}
+            <SparklesText
+            
+            className="text relative mx-0 max-w-[43.5rem] text-balance to-foreground pt-5 text-left text-5xl font-bold leading-[1.1] tracking-tight text-white sm:text-7xl md:px-4 md:py-2 md:text-center md:text-7xl md:leading-[] lg:max-w-screen-md lg:text-8xl">
               stiqqr
-            </h1>
+            </SparklesText>
+            {/* </h1> */}
           </BlurFade>
 
           <BlurFade yOffset={-6} delay={0.25 * 2} className="mb-12">

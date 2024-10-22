@@ -7,7 +7,7 @@ import type { User } from '@/lib/db/schema/users';
 import { createClient } from '@/lib/supabase/server';
 
 export const getAuthUser = async () => {
-  const supabase = createClient();
+  const supabase =await createClient();
 
   const res = await supabase.auth.getUser();
 

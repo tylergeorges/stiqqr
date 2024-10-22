@@ -30,7 +30,9 @@ export const metadata: Metadata = {
 export default async function MembersPage({ params }: PageProps<{ projectId: string }>) {
   const queryClient = new QueryClient();
 
-  const members = await queryClient.fetchQuery(useProjectMembersQuery(params.projectId));
+  const { projectId } = await params;
+
+  const members = await queryClient.fetchQuery(useProjectMembersQuery(projectId));
 
   return (
     <DashboardPageContainer>
